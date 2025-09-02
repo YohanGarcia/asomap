@@ -1,0 +1,20 @@
+{
+  "benefits": [
+    {
+      "icon": "FaMoneyBillWave",
+      "text": "Acceso a efectivo en cualquier momento a través de nuestra red de cajeros automáticos"
+    }
+  ],
+  "features": [
+    "Sin comisión por mantenimiento de cuenta",
+    "Retiros gratuitos en cajeros de nuestra red"
+  ],
+  "requirements": [
+    "Ser mayor de 18 años",
+    "Documento de identidad válido"
+  ],
+  "bannerImage": "https://images.unsplash.com/photo-1563013544-824ae1b704d3",
+  "accountImage": "https://images.unsplash.com/photo-1601597111158-2fceff292cdc",
+  "title": "Cuenta Física Clásica",
+  "description": "Nuestra Cuenta Física Clásica ofrece una solución bancaria tradicional con todas las comodidades modernas."
+} 

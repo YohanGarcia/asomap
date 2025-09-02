@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sugerencia Recibida - ASOMAP</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            line-height: 1.6; 
+            color: #333; 
+            max-width: 600px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            background-color: #f4f4f4; 
+        }
+        .container { 
+            background-color: #ffffff; 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        .header { 
+            text-align: center; 
+            margin-bottom: 30px; 
+            padding-bottom: 20px; 
+            border-bottom: 2px solid #e0e0e0; 
+        }
+        .logo { 
+            max-width: 200px; 
+            height: auto; 
+            margin-bottom: 15px; 
+        }
+        .title { 
+            color: #2c3e50; 
+            font-size: 24px; 
+            margin: 0; 
+            font-weight: bold; 
+        }
+        .subtitle { 
+            color: #7f8c8d; 
+            font-size: 16px; 
+            margin: 5px 0 0 0; 
+        }
+        .content { 
+            margin-bottom: 25px; 
+        }
+        .greeting { 
+            font-size: 18px; 
+            color: #2c3e50; 
+            margin-bottom: 20px; 
+        }
+        .suggestion-details { 
+            background-color: #f8f9fa; 
+            padding: 20px; 
+            border-radius: 8px; 
+            margin: 20px 0; 
+            border-left: 4px solid #3498db; 
+        }
+        .detail-item { 
+            margin-bottom: 10px; 
+        }
+        .detail-label { 
+            font-weight: bold; 
+            color: #2c3e50; 
+        }
+        .detail-value { 
+            color: #555; 
+            margin-left: 10px; 
+        }
+        .message-box { 
+            background-color: #e8f4fd; 
+            padding: 15px; 
+            border-radius: 5px; 
+            border: 1px solid #b3d9ff; 
+            margin: 15px 0; 
+        }
+        .footer { 
+            text-align: center; 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 2px solid #e0e0e0; 
+            color: #7f8c8d; 
+            font-size: 14px; 
+        }
+        .thank-you { 
+            background-color: #d4edda; 
+            color: #155724; 
+            padding: 15px; 
+            border-radius: 5px; 
+            text-align: center; 
+            margin: 20px 0; 
+            border: 1px solid #c3e6cb; 
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://www.asomap.com.do/wp-content/themes/asociacionmocana/images/logo.png" alt="ASOMAP" class="logo">
+            <h1 class="title">Sugerencia Recibida</h1>
+            <p class="subtitle">Gracias por tu feedback</p>
+        </div>
+        
+        <div class="content">
+            <div class="greeting">
+                Hola <strong>{{ full_name }}</strong>,
+            </div>
+            
+            <p>Hemos recibido tu sugerencia y queremos confirmarte que ha sido registrada en nuestro sistema.</p>
+            
+            <div class="suggestion-details">
+                <div class="detail-item">
+                    <span class="detail-label">Clasificación:</span>
+                    <span class="detail-value">{{ classification }}</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Fecha de envío:</span>
+                    <span class="detail-value">{{ created_at|date:"d/m/Y H:i" }}</span>
+                </div>
+            </div>
+            
+            <div class="message-box">
+                <strong>Tu mensaje:</strong><br>
+                {{ message|linebreaks }}
+            </div>
+            
+            <div class="thank-you">
+                <strong>¡Gracias por tu valioso feedback!</strong><br>
+                Nuestro equipo revisará tu sugerencia y la tendremos en cuenta para mejorar nuestros servicios.
+            </div>
+            
+            <p>Si tienes alguna pregunta adicional, no dudes en contactarnos.</p>
+        </div>
+        
+        <div class="footer">
+            <p><strong>ASOMAP - Asociación Mocana de Ahorros y Préstamos</strong></p>
+            <p>Este es un email automático, por favor no respondas a este mensaje.</p>
+            <p>Si no solicitaste este email, puedes ignorarlo de forma segura.</p>
+        </div>
+    </div>
+</body>
+</html>

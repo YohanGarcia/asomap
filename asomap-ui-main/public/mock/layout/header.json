@@ -1,0 +1,19 @@
+{
+    "navigation": {
+        "persona": "Persona",
+        "empresa": "Empresa"
+    },
+    "exchange": {
+        "base": "Tasa de Cambio",
+        "lastUpdated": "2023-05-22T10:30:00Z",
+        "showBuyRate": true,
+        "showSellRate": true,
+        "rates": [
+            {
+                "currency": "US DOLAR",
+                "buyRate": 55.50,
+                "sellRate": 56.50
+            }
+        ]
+    }
+}

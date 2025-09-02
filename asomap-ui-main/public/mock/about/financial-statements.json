@@ -1,0 +1,26 @@
+{
+    "data": {
+        "title": "Estados Financieros",
+        "description": "Consulta nuestros estados financieros auditados y trimestrales",
+        "years": [
+            {
+                "year": "2024",
+                "documents": {
+                    "audited": [
+                        {
+                            "title": "Estados Financieros Auditados 2024",
+                            "url": "/documents/financial/audited-2024.pdf"
+                        }
+                    ],
+                    "quarterly": [
+                        {
+                            "title": "Estados Financieros Q1 2024",
+                            "url": "/documents/financial/q1-2024.pdf",
+                            "quarter": "1"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+}

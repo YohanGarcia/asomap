@@ -1,0 +1,48 @@
+# Dependencias
+**/node_modules
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+# Archivos de desarrollo
+.env
+.env.local
+.env.*.local
+.venv
+venv/
+ENV/
+env/
+
+# Logs y cache
+*.log
+.cache
+.pytest_cache
+.mypy_cache
+.hypothesis
+
+# Archivos del sistema
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Git
+.git
+.gitignore
+
+# Build y distribución
+**/build/
+**/dist/
+**/staticfiles/
+**/media/
+
+# Base de datos
+**/*.db
+**/*.sqlite3
+
+# Archivos temporales
+**/tmp/
+**/temp/

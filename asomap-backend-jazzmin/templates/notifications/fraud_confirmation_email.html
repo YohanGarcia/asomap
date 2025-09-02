@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmación de Reporte de Fraude - ASOMAP</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f8fafc;
+        }
+        .container {
+            background-color: #ffffff;
+            padding: 0;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+            padding: 40px 30px 30px;
+            text-align: center;
+            position: relative;
+        }
+        .header::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #DC2626 0%, #EF4444 100%);
+        }
+        .logo {
+            margin-bottom: 16px;
+        }
+        .logo img {
+            height: 60px;
+            width: auto;
+            max-width: 200px;
+        }
+        .title {
+            color: #DC2626;
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .subtitle {
+            color: #6B7280;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .content {
+            padding: 30px;
+        }
+        .greeting {
+            font-size: 16px;
+            margin-bottom: 24px;
+            color: #374151;
+        }
+        .greeting strong {
+            color: #DC2626;
+        }
+        .status {
+            background: linear-gradient(135deg, #FEF2F2 0%, #FEE2E2 100%);
+            color: #DC2626;
+            padding: 16px 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 24px 0;
+            font-weight: 600;
+            border: 1px solid #FECACA;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .status::before {
+            content: '⚠️';
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .details {
+            background-color: #f9fafb;
+            padding: 24px;
+            border-radius: 12px;
+            margin: 24px 0;
+            border: 1px solid #e5e7eb;
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding: 8px 0;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+        }
+        .detail-label {
+            font-weight: 600;
+            color: #4b5563;
+            font-size: 14px;
+        }
+        .detail-value {
+            color: #DC2626;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .steps {
+            background-color: #FEF3C7;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 24px 0;
+            border-left: 4px solid #F59E0B;
+        }
+        .steps h3 {
+            color: #92400e;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            margin-top: 0;
+        }
+        .steps ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .steps li {
+            color: #78350f;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+        .important {
+            background-color: #FEF2F2;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 24px 0;
+            border-left: 4px solid #EF4444;
+        }
+        .important strong {
+            color: #DC2626;
+            font-size: 14px;
+        }
+        .important p {
+            color: #7f1d1d;
+            font-size: 14px;
+            margin: 8px 0 0 0;
+        }
+        .footer {
+            background-color: #1f2937;
+            color: #9ca3af;
+            text-align: center;
+            padding: 24px 30px;
+            font-size: 12px;
+            line-height: 1.5;
+        }
+        .footer p {
+            margin: 4px 0;
+        }
+        .footer strong {
+            color: #d1d5db;
+        }
+        .contact-info {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #374151;
+        }
+        .contact-info p {
+            margin: 4px 0;
+        }
+        .report-id {
+            padding: 8px 16px;
+            font-weight: 600;
+            font-size: 14px;
+            display: inline-block;
+            background-color: #DC2626;
+            color: white;
+            border-radius: 6px;
+        }
+        .date-info {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 4px;
+        }
+        .security-notice {
+            background-color: #F0F9FF;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 24px 0;
+            border-left: 4px solid #0EA5E9;
+        }
+        .security-notice strong {
+            color: #0369A1;
+            font-size: 14px;
+        }
+        .security-notice p {
+            color: #0C4A6E;
+            font-size: 14px;
+            margin: 8px 0 0 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="https://www.asomap.com.do/wp-content/themes/asociacionmocana/images/logo.png" alt="ASOMAP Logo">
+            </div>
+            <div class="title">Confirmación de Reporte de Fraude</div>
+            <div class="subtitle">Equipo de Seguridad - Asociación de Ahorros y Préstamos Múltiples</div>
+        </div>
+        
+        <div class="content">
+            <div class="greeting">
+                Estimado/a <strong>{{ full_name }}</strong>,
+            </div>
+            
+            <p style="color: #374151; font-size: 15px; margin-bottom: 20px;">
+                Hemos recibido su reporte de fraude y queremos confirmarle que ha sido registrado exitosamente en nuestro sistema de seguridad.
+            </p>
+            
+            <div class="status">
+                Reporte de Fraude Registrado Exitosamente
+            </div>
+            
+            <div class="details">
+                <div class="detail-row">
+                    <span class="detail-label">Número de Reporte:</span>
+                    <span class="report-id">#{{ report_id }}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Fecha de Registro:</span>
+                    <div style="text-align: right;">
+                        <span class="detail-value">{{ created_at }}</span>
+                        <div class="date-info">{{ time_zone }}</div>
+                    </div>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Clasificación:</span>
+                    <span class="detail-value">{{ classification }}</span>
+                </div>
+            </div>
+            
+            <div class="steps">
+                <h3>🔒 Próximos pasos:</h3>
+                <ul>
+                    <li>Nuestro equipo de seguridad revisará su reporte en un plazo máximo de <strong>24 horas hábiles</strong>.</li>
+                    <li>Recibirá una notificación cuando su reporte sea procesado.</li>
+                    <li>Si necesita información adicional, nos pondremos en contacto con usted.</li>
+                </ul>
+            </div>
+            
+            <div class="security-notice">
+                <strong>🛡️ Información de Seguridad:</strong>
+                <p>Su reporte será tratado con la máxima confidencialidad y será investigado por nuestro equipo especializado en seguridad.</p>
+            </div>
+            
+            <div class="important">
+                <strong>⚠️ Importante:</strong>
+                <p>Por favor, conserve este correo como comprobante de su reporte. Si no encuentra este mensaje, revise su carpeta de correo no deseado.</p>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Este es un correo automático del sistema de seguridad, por favor no responda a este mensaje.</p>
+            <div class="contact-info">
+                <p><strong>Canales de contacto oficiales:</strong></p>
+                <p>📧 Email: seguridad@asomap.com.do</p>
+                <p>📞 Teléfono: (809) 565-0000</p>
+                <p>🌐 Web: www.asomap.com.do</p>
+            </div>
+            <p style="margin-top: 16px;">&copy; 2024 ASOMAP. Todos los derechos reservados.</p>
+        </div>
+    </div>
+</body>
+</html>

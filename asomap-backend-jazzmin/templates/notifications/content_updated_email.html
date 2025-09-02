@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contenido Actualizado - ASOMAP</title>
+    <style>
+        /* Estilos inline para compatibilidad con clientes de email */
+        body {
+            font-family: 'Open Sans', Arial, sans-serif;
+            line-height: 1.6;
+            color: #374151;
+            margin: 0;
+            padding: 0;
+            background-color: #f9fafb;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .email-header {
+            background: linear-gradient(135deg, #2D4394 0%, #1e2f6b 100%);
+            color: #ffffff;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: brightness(0) saturate(100%) invert(100%);
+        }
+        
+        .header-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .email-body {
+            padding: 40px 30px;
+        }
+        
+        .content-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            color: #2D4394;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .content-item {
+            background-color: #f8fafc;
+            border-left: 4px solid #F47821;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .item-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+        
+        .item-description {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .action-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #F47821 0%, #F4A649 100%);
+            color: #ffffff;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(244, 120, 33, 0.3);
+        }
+        
+        .email-footer {
+            background-color: #f3f4f6;
+            padding: 20px 30px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .footer-links {
+            margin-top: 15px;
+        }
+        
+        .footer-links a {
+            color: #2D4394;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 600px) {
+            .email-container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            
+            .email-header,
+            .email-body,
+            .email-footer {
+                padding: 20px;
+            }
+            
+            .header-title {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="email-header">
+            <img src="{{ logo_url|default:'https://asomap.com/static/admin/images/Logo.svg' }}" alt="ASOMAP" class="logo">
+            <h1 class="header-title">Contenido Actualizado</h1>
+        </div>
+        
+        <!-- Body -->
+        <div class="email-body">
+            <div class="content-section">
+                <h2 class="section-title">¡Hola {{ user_name|default:"Usuario" }}!</h2>
+                <p>Se han realizado actualizaciones en el contenido del sitio web de ASOMAP. Aquí tienes un resumen de los cambios:</p>
+            </div>
+            
+            <div class="content-section">
+                <h3 class="section-title">Contenido Modificado</h3>
+                
+                {% for item in updated_content %}
+                <div class="content-item">
+                    <div class="item-title">{{ item.title }}</div>
+                    <div class="item-description">{{ item.description }}</div>
+                    <small style="color: #9ca3af;">Actualizado: {{ item.updated_at|date:"d/m/Y H:i" }}</small>
+                </div>
+                {% endfor %}
+            </div>
+            
+            <div class="content-section">
+                <h3 class="section-title">Acciones Realizadas</h3>
+                <ul style="color: #6b7280; padding-left: 20px;">
+                    {% for action in actions %}
+                    <li style="margin-bottom: 8px;">{{ action }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            
+            <div style="text-align: center;">
+                <a href="{{ admin_url|default:'/admin/' }}" class="action-button">
+                    Ver en el Panel de Administración
+                </a>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="email-footer">
+            <p>Este es un mensaje automático del sistema de administración de ASOMAP.</p>
+            <div class="footer-links">
+                <a href="{{ site_url|default:'https://asomap.com' }}">Visitar Sitio Web</a>
+                <a href="{{ admin_url|default:'/admin/' }}">Panel de Administración</a>
+                <a href="{{ unsubscribe_url|default:'#' }}">Desuscribirse</a>
+            </div>
+            <p style="margin-top: 20px; font-size: 12px; color: #9ca3af;">
+                © {% now "Y" %} ASOMAP. Todos los derechos reservados.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

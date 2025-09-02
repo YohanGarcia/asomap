@@ -1,0 +1,27 @@
+{
+    "section": {
+        "title": "¿Qué necesitas hoy?",
+        "subtitle": "¡Mira los productos que tenemos para ti online!"
+    },
+    "buttonText": "¡Solicítalo!",
+    "products": [
+        {
+            "id": "1",
+            "title": "¡Tus sueños, tu Préstamo!",
+            "description": "Obtenlo en menos 30 minutos a través de nuestros canales digitales.",
+            "image": "../../src/assets/images/products/product-cards1.png",
+            "category": "prestamos",
+            "imageWidth": 600,
+            "imageHeight": 400
+        },
+        {
+            "id": "2",
+            "title": "¡Tus sueños, tu Préstamo!",
+            "description": "Obtenlo en menos 30 minutos a través de nuestros canales digitales.",
+            "image": "../../src/assets/images/products/product-cards1.png",
+            "category": "prestamos",
+            "imageWidth": 600,
+            "imageHeight": 400
+        }
+    ]
+}

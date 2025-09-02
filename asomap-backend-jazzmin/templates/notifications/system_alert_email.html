@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alerta del Sistema - ASOMAP</title>
+    <style>
+        /* Estilos inline para compatibilidad con clientes de email */
+        body {
+            font-family: 'Open Sans', Arial, sans-serif;
+            line-height: 1.6;
+            color: #374151;
+            margin: 0;
+            padding: 0;
+            background-color: #f9fafb;
+        }
+        
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .email-header {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: #ffffff;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 120px;
+            height: auto;
+            margin-bottom: 20px;
+            filter: brightness(0) saturate(100%) invert(100%);
+        }
+        
+        .header-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin: 0;
+        }
+        
+        .alert-level {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .email-body {
+            padding: 40px 30px;
+        }
+        
+        .alert-section {
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            color: #dc2626;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .alert-item {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        
+        .alert-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            border-radius: 0 2px 2px 0;
+        }
+        
+        .alert-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .alert-icon {
+            width: 32px;
+            height: 32px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 16px;
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            color: #1f2937;
+            margin: 0;
+            font-size: 16px;
+        }
+        
+        .alert-time {
+            color: #9ca3af;
+            font-size: 12px;
+            margin-left: auto;
+        }
+        
+        .alert-description {
+            color: #6b7280;
+            font-size: 14px;
+            margin: 0;
+            line-height: 1.5;
+        }
+        
+        .alert-details {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #ffffff;
+            border-radius: 6px;
+            border: 1px solid #fecaca;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            padding: 5px 0;
+        }
+        
+        .detail-label {
+            font-weight: 600;
+            color: #374151;
+        }
+        
+        .detail-value {
+            color: #6b7280;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+        
+        .severity-critical {
+            background-color: #fef2f2;
+            border-color: #fecaca;
+        }
+        
+        .severity-critical .alert-icon {
+            background-color: #dc2626;
+        }
+        
+        .severity-warning {
+            background-color: #fffbeb;
+            border-color: #fed7aa;
+        }
+        
+        .severity-warning .alert-icon {
+            background-color: #f59e0b;
+        }
+        
+        .severity-info {
+            background-color: #eff6ff;
+            border-color: #bfdbfe;
+        }
+        
+        .severity-info .alert-icon {
+            background-color: #3b82f6;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .action-button {
+            display: inline-block;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #F47821 0%, #F4A649 100%);
+            color: #ffffff;
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280 0%, #9ca3af 100%);
+            color: #ffffff;
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: #ffffff;
+        }
+        
+        .action-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .recommendations {
+            background-color: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+        
+        .recommendations h4 {
+            color: #0369a1;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+        
+        .recommendations ul {
+            margin: 0;
+            padding-left: 20px;
+            color: #0c4a6e;
+        }
+        
+        .recommendations li {
+            margin-bottom: 8px;
+        }
+        
+        .email-footer {
+            background-color: #f3f4f6;
+            padding: 20px 30px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .footer-links {
+            margin-top: 15px;
+        }
+        
+        .footer-links a {
+            color: #2D4394;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 600px) {
+            .email-container {
+                margin: 10px;
+                border-radius: 8px;
+            }
+            
+            .email-header,
+            .email-body,
+            .email-footer {
+                padding: 20px;
+            }
+            
+            .header-title {
+                font-size: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .action-button {
+                width: 100%;
+                max-width: 200px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-container">
+        <!-- Header -->
+        <div class="email-header">
+            <img src="{{ logo_url|default:'https://asomap.com/static/admin/images/Logo.svg' }}" alt="ASOMAP" class="logo">
+            <h1 class="header-title">Alerta del Sistema</h1>
+            <div class="alert-level">{{ alert_level|default:"CRÍTICA" }}</div>
+        </div>
+        
+        <!-- Body -->
+        <div class="email-body">
+            <div class="alert-section">
+                <h2 class="section-title">¡Atención Administrador!</h2>
+                <p>Se ha detectado una alerta importante en el sistema de administración de ASOMAP que requiere tu atención inmediata.</p>
+            </div>
+            
+            <div class="alert-section">
+                <h3 class="section-title">Detalles de la Alerta</h3>
+                
+                {% for alert in alerts %}
+                <div class="alert-item severity-{{ alert.severity|default:'critical' }}">
+                    <div class="alert-header">
+                        <div class="alert-icon">
+                            {% if alert.type == 'security' %}🔒
+                            {% elif alert.type == 'performance' %}⚡
+                            {% elif alert.type == 'error' %}❌
+                            {% elif alert.type == 'warning' %}⚠️
+                            {% else %}🚨
+                            {% endif %}
+                        </div>
+                        <h4 class="alert-title">{{ alert.title }}</h4>
+                        <span class="alert-time">{{ alert.timestamp|date:"d/m/Y H:i:s" }}</span>
+                    </div>
+                    <p class="alert-description">{{ alert.description }}</p>
+                    
+                    {% if alert.details %}
+                    <div class="alert-details">
+                        {% for key, value in alert.details.items %}
+                        <div class="detail-row">
+                            <span class="detail-label">{{ key|title }}:</span>
+                            <span class="detail-value">{{ value }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+            
+            {% if recommendations %}
+            <div class="recommendations">
+                <h4>Recomendaciones de Acción:</h4>
+                <ul>
+                    {% for recommendation in recommendations %}
+                    <li>{{ recommendation }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+            
+            <div class="action-buttons">
+                <a href="{{ admin_url|default:'/admin/' }}" class="action-button btn-primary">
+                    Ir al Panel de Administración
+                </a>
+                <a href="{{ logs_url|default:'/admin/logs/' }}" class="action-button btn-secondary">
+                    Ver Logs del Sistema
+                </a>
+                {% if alert_level == 'CRÍTICA' %}
+                <a href="{{ emergency_url|default:'/admin/emergency/' }}" class="action-button btn-danger">
+                    Acción de Emergencia
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="email-footer">
+            <p><strong>⚠️ Esta es una alerta automática del sistema de administración de ASOMAP.</strong></p>
+            <p>Si no has iniciado sesión recientemente, considera cambiar tu contraseña por seguridad.</p>
+            <div class="footer-links">
+                <a href="{{ site_url|default:'https://asomap.com' }}">Visitar Sitio Web</a>
+                <a href="{{ admin_url|default:'/admin/' }}">Panel de Administración</a>
+                <a href="{{ support_url|default:'/admin/support/' }}">Soporte Técnico</a>
+            </div>
+            <p style="margin-top: 20px; font-size: 12px; color: #9ca3af;">
+                © {% now "Y" %} ASOMAP. Todos los derechos reservados.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

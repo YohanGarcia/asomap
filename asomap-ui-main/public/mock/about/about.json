@@ -1,0 +1,109 @@
+{
+    "hero": {
+        "title": "Sobre Nosotros",
+        "description": "Conoce más sobre nuestra misión, visión y valores."
+    },
+    "quienesSomos": {
+        "title": "¿Quiénes Somos?",
+        "paragraphs": [
+            "Para el año 1969, la ciudad de Moca era apenas una aldea, enmarcada en unas cuantas calles y con un nivel de desarrollo semirural, aspecto que fue aprovechado por un selecto grupo de munícipes visionarios y emprendedores para crear una institución que permitiera a la provincia Espaillat crecer en los ámbitos urbanístico y económico, en sentido general.",
+            "De esa idea, nace la Asociación Mocana de Ahorros y Préstamos, que 54 años después cuenta con oficinas en: Moca Oficina Principal, Plaza Sunrise Moca, Colinas Mall Santiago, Bella Terra Mall Santiago, Altamira, Gaspar Hernandez, San Víctor, Villa Tapia, Cayetano Germosen, Juan López, Licey y Santo Domingo."
+        ],
+        "imageSrc": "../../../src/assets/images/about/historia.jpg",
+        "imageAlt": "Imagen que representa quienes somos"
+    },
+    "nuestraHistoria": {
+        "title": "Nuestra Historia",
+        "paragraphs": [
+            "Esta entidad es de carácter mutualista y su objetivo consiste en proveer y fomentar el ahorro, el cual es inicialmente destinado al otorgamiento de préstamos para la construcción, adquisición y mejoramiento de viviendas y locales comerciales.",
+            "Las actividades de la Asociación están sujetas a la regulación y vigilancia por la Superintendencia de Bancos y el Banco Central de la República Dominicana."
+        ],
+        "imageSrc": "../../../src/assets/images/about/historia.jpg",
+        "imageAlt": "Imagen que representa nuestra historia"
+    },
+
+    "mision": {
+        "title": "Misión",
+        "description": [
+            "Somos una institución mutualista que oferta productos y servicios financieros basados en la excelencia en el servicio, en tiempo oportuno y accesibilidad a dichos servicios con colaboradores altamente calificados y el uso de tecnología de punta."
+        ]
+    },
+
+    "vision": {
+        "title": "Visión",
+        "description": [
+            "Ocupar una posición preferencial como asociación de ahorro y préstamos, siendo reconocida por su solidez, seguridad y excelencia en el servicio."
+        ]
+    },
+
+    "valores": {
+        "title": "Nuestros Valores",
+        "items": [
+            {
+                "title": "Honestidad",
+                "description": "Como institución, buscamos comportarnos y expresarnos siempre con coherencia y sinceridad y de acuerdo a valores de verdad y justicia."
+            },
+            {
+                "title": "Responsabilidad",
+                "description": "Cumplimos con nuestros compromisos y obligaciones, asumiendo las consecuencias de nuestras acciones."
+            },
+            {
+                "title": "Compromiso",
+                "description": "Nos dedicamos plenamente a servir a nuestros clientes y a la comunidad."
+            },
+            {
+                "title": "Transparencia",
+                "description": "Actuamos de manera clara y directa, facilitando el acceso a la información."
+            },
+            {
+                "title": "Excelencia",
+                "description": "Buscamos constantemente la mejora continua en todos nuestros servicios."
+            }
+        ]
+    },
+
+    "consejoDirectores": [
+        {
+            "name": "Omar A. Taveras López",
+            "position": "Presidente",
+            "imageSrc": "../../../src/assets/images/about/Presidente.jpg",
+            "imageAlt": "Omar A. Taveras López"
+        },
+        {
+            "name": "Johany Teresa García Martínez",
+            "position": "Miembro",
+            "imageSrc": "../../../src/assets/images/about/avatar.jpg",
+            "imageAlt": "Johany Teresa García Martínez"
+        },
+        {
+            "name": "María Esther Veras Taveras",
+            "position": "Primer Vicepresidente",
+            "imageSrc": "../../../src/assets/images/about/PrimerVicepresidente.jpg",
+            "imageAlt": "María Esther Veras Taveras"
+        },
+        {
+            "name": "Marianny Paola Abreu Pérez",
+            "position": "Segunda Vicepresidente",
+            "imageSrc": "../../../src/assets/images/about/SegundaVicepresidente.jpg",
+            "imageAlt": "Marianny Paola Abreu Pérez"
+        },
+        {
+            "name": "Manuel de Jesús Ruiz Beato",
+            "position": "Vicepresidente Ejecutivo",
+            "imageSrc": "../../../src/assets/images/about/VicepresidenteEjecutivo.jpg",
+            "imageAlt": "Manuel de Jesús Ruiz Beato"
+        },
+        {
+            "name": "Pedro José Pérez Ferreras",
+            "position": "Secretario",
+            "imageSrc": "../../../src/assets/images/about/Secretario.jpg",
+            "imageAlt": "Pedro José Pérez Ferreras"
+        },
+        {
+            "name": "Miguel Darío Bencosme Comprés",
+            "position": "Miembro",
+            "imageSrc": "../../../src/assets/images/about/Miembro.jpg",
+            "imageAlt": "Miguel Darío Bencosme Comprés"
+        }
+    ]
+}

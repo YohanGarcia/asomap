@@ -1,0 +1,21 @@
+{
+  "locations": [
+    {
+      "id": "1",
+      "type": "branch",
+      "name": "Oficina Principal",
+      "address": "Calle Independencia Esq. José María Michel, Moca",
+      "phone": "(809)-578-2321",
+      "hours": {
+        "openingTime": "8:30 AM",
+        "closingTime": "5 PM"
+      },
+      "coordinates": {
+        "lat": 19.396886198258557,
+        "lng": -70.52569771346013
+      },
+      "isOpen": false,
+      "services": ["Todos los Servicios"]
+    }
+  ]
+} 

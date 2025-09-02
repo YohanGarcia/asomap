@@ -1,0 +1,122 @@
+{
+    "data": {
+        "title": "Políticas",
+        "description": "Nuestras políticas institucionales garantizan la transparencia y eficiencia en nuestras operaciones.",
+        "downloadText": "Descargar documento",
+        "lastUpdateText": "Última actualización",
+        "allPoliciesText": "Todas las Políticas",
+        "categories": [
+            {
+                "title": "Políticas de Gobernanza",
+                "icon": "shield",
+                "description": "Lineamientos fundamentales que rigen nuestra institución",
+                "documents": [
+                    {
+                        "title": "Código de Ética y Conducta",
+                        "description": "Lineamientos éticos y conductuales para todos los miembros de la institución",
+                        "url": "https://www.asomap.com.do/wp-content/uploads/2024/01/codigo-etica.pdf",
+                        "lastUpdate": "2024-01-15"
+                    },
+                    {
+                        "title": "Política de Gobierno Corporativo",
+                        "description": "Marco de gobierno y toma de decisiones institucional",
+                        "url": "https://www.asomap.com.do/wp-content/uploads/2023/12/gobierno-corporativo.pdf",
+                        "lastUpdate": "2023-12-01"
+                    },
+                    {
+                        "title": "Política de Transparencia",
+                        "description": "Directrices para garantizar la transparencia en todas nuestras operaciones",
+                        "url": "https://www.asomap.com.do/wp-content/uploads/2024/01/transparencia.pdf",
+                        "lastUpdate": "2024-01-20"
+                    },
+                    {
+                        "title": "Manual de Gobernanza Digital",
+                        "description": "Guía para la gestión de activos y procesos digitales",
+                        "url": "https://www.asomap.com.do/wp-content/uploads/2024/01/gobernanza-digital.pdf",
+                        "lastUpdate": "2024-01-18"
+                    }
+                ]
+            },
+            {
+                "title": "Políticas Operativas",
+                "icon": "cog",
+                "description": "Procedimientos y normas para nuestras operaciones diarias",
+                "documents": [
+                    {
+                        "title": "Manual de Procedimientos",
+                        "description": "Procedimientos operativos estándar de la institución",
+                        "url": "https://www.asomap.com.do/wp-content/uploads/2024/01/manual-procedimientos.pdf",
+                        "lastUpdate": "2024-01-10"
+                    },
+                    {
+                        "title": "Política de Seguridad",
+                        "description": "Normas y procedimientos de seguridad institucional",
+                        "url": "https://www.asomap.com.do/wp-content/uploads/2023/11/seguridad.pdf",
+                        "lastUpdate": "2023-11-15"
+                    },
+                    {
+                        "title": "Manual de Calidad",
+                        "description": "Estándares y procesos para asegurar la calidad del servicio",
+                        "url": "https://www.asomap.com.do/wp-content/uploads/2024/01/calidad.pdf",
+                        "lastUpdate": "2024-01-22"
+                    },
+                    {
+                        "title": "Política de Gestión de Riesgos",
+                        "description": "Marco para la identificación y gestión de riesgos operativos",
+                        "url": "https://www.asomap.com.do/wp-content/uploads/2024/01/riesgos.pdf",
+                        "lastUpdate": "2024-01-05"
+                    },
+                    {
+                        "title": "Manual de Continuidad de Negocio",
+                        "description": "Procedimientos para garantizar la continuidad operativa",
+                        "url": "https://www.asomap.com.do/wp-content/uploads/2024/01/continuidad.pdf",
+                        "lastUpdate": "2024-01-12"
+                    }
+                ]
+            },
+            {
+                "title": "Políticas de Cumplimiento",
+                "icon": "check-circle",
+                "description": "Normativas y regulaciones que aseguran nuestro cumplimiento",
+                "documents": [
+                    {
+                        "title": "Manual de Prevención de Lavado",
+                        "description": "Políticas y procedimientos contra el lavado de activos",
+                        "url": "https://www.asomap.com.do/wp-content/uploads/2024/01/prevencion-lavado.pdf",
+                        "lastUpdate": "2024-01-05"
+                    },
+                    {
+                        "title": "Política de Protección al Usuario",
+                        "description": "Lineamientos para la protección de nuestros usuarios",
+                        "url": "https://www.asomap.com.do/wp-content/uploads/2023/12/proteccion-usuario.pdf",
+                        "lastUpdate": "2023-12-20"
+                    },
+                    {
+                        "title": "Política de Privacidad de Datos",
+                        "description": "Normas para la protección y manejo de datos personales",
+                        "url": "https://www.asomap.com.do/wp-content/uploads/2024/01/privacidad.pdf",
+                        "lastUpdate": "2024-01-25"
+                    },
+                    {
+                        "title": "Manual de Cumplimiento Regulatorio",
+                        "description": "Guía para el cumplimiento de regulaciones financieras",
+                        "url": "https://www.asomap.com.do/wp-content/uploads/2024/01/cumplimiento.pdf",
+                        "lastUpdate": "2024-01-15"
+                    },
+                    {
+                        "title": "Política Antisoborno y Anticorrupción",
+                        "description": "Medidas preventivas contra el soborno y la corrupción",
+                        "url": "https://www.asomap.com.do/wp-content/uploads/2024/01/anticorrupcion.pdf",
+                        "lastUpdate": "2024-01-08"
+                    },
+                    {
+                        "title": "Manual de Debida Diligencia",
+                        "description": "Procedimientos para la evaluación de clientes y proveedores",
+                        "url": "https://www.asomap.com.do/wp-content/uploads/2024/01/debida-diligencia.pdf",
+                        "lastUpdate": "2024-01-19"
+                    }
+                ]
+            }
+        ]
+    }
+}

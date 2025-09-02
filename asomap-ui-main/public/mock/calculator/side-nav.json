@@ -1,0 +1,16 @@
+{
+  "navItems": [
+    {
+      "icon": "FaCalculator",
+      "label": "Calculadora Financiera",
+      "href": "#"
+    },
+    {
+      "icon": "FaMapMarkerAlt",
+      "label": "Sucursales y Cajeros",
+      "href": "/mapa-ubicaciones"
+    }
+  ],
+  "defaultLoanRate": 23,
+  "defaultCertificateRate": 18.75
+} 

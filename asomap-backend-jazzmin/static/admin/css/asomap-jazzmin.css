@@ -1,0 +1,293 @@
+/*
+ * Estilos personalizados para ASOMAP en Jazzmin
+ * Colores basados en la identidad visual de https://www.asomap.com.do/
+ */
+
+/* Variables de colores ASOMAP */
+:root {
+    --asomap-blue: #2f4495;      /* Azul principal ASOMAP */
+    --asomap-blue-dark: #1e2d5f; /* Azul oscuro */
+    --asomap-blue-light: #4a5ba8; /* Azul claro */
+    --asomap-orange: #ff9900;    /* Naranja/Amarillo ASOMAP */
+    --asomap-orange-dark: #c67905; /* Naranja oscuro */
+    --asomap-orange-light: #ffb333; /* Naranja claro */
+    --asomap-white: #ffffff;     /* Blanco */
+    --asomap-gray: #6c757d;      /* Gris */
+    --asomap-gray-light: #f8f9fa; /* Gris claro */
+}
+
+/* Logo de ASOMAP - Ocupa todo el ancho disponible */
+.navbar-brand {
+    display: flex !important;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100% !important;
+    max-width: 300px;
+    padding: 0 !important;
+}
+
+.navbar-brand img {
+    max-height: 50px;
+    width: 100% !important;
+    height: auto;
+    object-fit: contain;
+    margin: 0 !important;
+}
+
+/* Ocultar texto del brand si existe */
+.navbar-brand span,
+.navbar-brand .brand-text,
+.navbar-brand .navbar-brand-text {
+    display: none !important;
+}
+
+/* Ocultar completamente el texto "Administración de Django" */
+.navbar-brand::after,
+.navbar-brand::before {
+    display: none !important;
+}
+
+/* Ocultar cualquier texto en el navbar-brand */
+.navbar-brand *:not(img) {
+    display: none !important;
+}
+
+/* Ocultar el título del sitio en el navbar */
+.navbar-brand .site-title,
+.navbar-brand .site-header {
+    display: none !important;
+}
+
+/* Ocultar texto "Administración de Django" específicamente */
+.navbar-brand:contains("Administración de Django"),
+.navbar-brand:contains("Django"),
+.navbar-brand:contains("Administración") {
+    font-size: 0 !important;
+    color: transparent !important;
+}
+
+/* Ocultar cualquier texto que contenga "Administración" o "Django" */
+*:contains("Administración de Django"),
+*:contains("Django Administration"),
+*:contains("Administración") {
+    font-size: 0 !important;
+    color: transparent !important;
+    visibility: hidden !important;
+}
+
+/* Ocultar texto en el navbar de forma más agresiva */
+.navbar-brand,
+.navbar-brand *,
+.navbar .navbar-brand,
+.navbar .navbar-brand * {
+    font-size: 0 !important;
+    color: transparent !important;
+    text-indent: -9999px !important;
+    overflow: hidden !important;
+}
+
+/* Mantener solo la imagen visible */
+.navbar-brand img {
+    font-size: initial !important;
+    color: initial !important;
+    text-indent: initial !important;
+    overflow: visible !important;
+    visibility: visible !important;
+}
+
+/* Ocultar texto en el título de la página */
+.title:contains("Administración de Django"),
+h1:contains("Administración de Django"),
+.breadcrumb:contains("Administración de Django") {
+    display: none !important;
+}
+
+/* Navbar personalizado */
+.navbar-info {
+    background-color: var(--asomap-blue) !important;
+    border-color: var(--asomap-blue-dark) !important;
+}
+
+.navbar-info .navbar-brand {
+    color: var(--asomap-white) !important;
+    font-weight: bold;
+}
+
+.navbar-info .navbar-nav .nav-link {
+    color: var(--asomap-white) !important;
+}
+
+.navbar-info .navbar-nav .nav-link:hover {
+    color: var(--asomap-orange) !important;
+}
+
+/* Sidebar personalizado */
+.sidebar-dark-info {
+    background-color: var(--asomap-blue-dark) !important;
+}
+
+.sidebar-dark-info .nav-sidebar .nav-link {
+    color: var(--asomap-white) !important;
+}
+
+.sidebar-dark-info .nav-sidebar .nav-link:hover {
+    background-color: var(--asomap-blue) !important;
+    color: var(--asomap-orange) !important;
+}
+
+.sidebar-dark-info .nav-sidebar .nav-link.active {
+    background-color: var(--asomap-blue) !important;
+    color: var(--asomap-orange) !important;
+}
+
+/* Botones personalizados */
+.btn-info {
+    background-color: var(--asomap-blue) !important;
+    border-color: var(--asomap-blue) !important;
+    color: var(--asomap-white) !important;
+}
+
+.btn-info:hover {
+    background-color: var(--asomap-blue-dark) !important;
+    border-color: var(--asomap-blue-dark) !important;
+    color: var(--asomap-white) !important;
+}
+
+.btn-success {
+    background-color: var(--asomap-orange) !important;
+    border-color: var(--asomap-orange-dark) !important;
+    color: var(--asomap-white) !important;
+}
+
+.btn-success:hover {
+    background-color: var(--asomap-orange-dark) !important;
+    border-color: var(--asomap-orange-dark) !important;
+    color: var(--asomap-white) !important;
+}
+
+/* Botón naranja personalizado */
+.btn-warning {
+    background-color: var(--asomap-orange) !important;
+    border-color: var(--asomap-orange-dark) !important;
+    color: var(--asomap-white) !important;
+}
+
+.btn-warning:hover {
+    background-color: var(--asomap-orange-dark) !important;
+    border-color: var(--asomap-orange-dark) !important;
+    color: var(--asomap-white) !important;
+}
+
+/* Enlaces */
+a {
+    color: var(--asomap-blue) !important;
+}
+
+a:hover {
+    color: var(--asomap-orange) !important;
+}
+
+/* Títulos */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--asomap-blue) !important;
+}
+
+/* Cards y contenedores */
+.card-header {
+    background-color: var(--asomap-gray-light) !important;
+    border-bottom: 1px solid var(--asomap-blue) !important;
+}
+
+/* Tablas */
+.table thead th {
+    background-color: var(--asomap-blue) !important;
+    color: var(--asomap-white) !important;
+    border-color: var(--asomap-blue-dark) !important;
+}
+
+/* Paginación */
+.page-item.active .page-link {
+    background-color: var(--asomap-blue) !important;
+    border-color: var(--asomap-blue) !important;
+}
+
+.page-link {
+    color: var(--asomap-blue) !important;
+}
+
+.page-link:hover {
+    color: var(--asomap-orange) !important;
+}
+
+/* Formularios */
+.form-control:focus {
+    border-color: var(--asomap-blue) !important;
+    box-shadow: 0 0 0 0.2rem rgba(47, 68, 149, 0.25) !important;
+}
+
+/* Alertas */
+.alert-info {
+    background-color: rgba(47, 68, 149, 0.1) !important;
+    border-color: var(--asomap-blue) !important;
+    color: var(--asomap-blue-dark) !important;
+}
+
+.alert-success {
+    background-color: rgba(255, 153, 0, 0.1) !important;
+    border-color: var(--asomap-orange) !important;
+    color: var(--asomap-orange-dark) !important;
+}
+
+/* Badges */
+.badge-info {
+    background-color: var(--asomap-blue) !important;
+}
+
+.badge-success {
+    background-color: var(--asomap-orange) !important;
+}
+
+.badge-warning {
+    background-color: var(--asomap-orange) !important;
+}
+
+/* Footer */
+.main-footer {
+    background-color: var(--asomap-gray-light) !important;
+    border-top: 1px solid var(--asomap-blue) !important;
+    color: var(--asomap-gray) !important;
+}
+
+/* Logo y branding */
+.site-brand {
+    color: var(--asomap-blue) !important;
+    font-weight: bold;
+}
+
+/* Hover effects */
+.nav-link:hover,
+.btn:hover,
+a:hover {
+    color: var(--asomap-orange) !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .navbar-brand {
+        max-width: 200px;
+    }
+    
+    .navbar-brand img {
+        max-height: 40px;
+    }
+}
+
+@media (max-width: 576px) {
+    .navbar-brand {
+        max-width: 150px;
+    }
+    
+    .navbar-brand img {
+        max-height: 35px;
+    }
+}

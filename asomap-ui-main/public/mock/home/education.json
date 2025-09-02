@@ -1,0 +1,17 @@
+{
+    "title": "Educación",
+    "subtitle": "Aprendiendo con Asomap",
+    "educationItems": [
+        {
+            "image": "../../src/assets/images/educations/prevenir-fraudes-online.jpg",
+            "alt": "Cómo prevenir fraudes Online",
+            "description": "¿Cómo prevenir fraudes online?"
+        },
+        {
+            "image": "../../src/assets/images/educations/gestión-financiera-inteligente.jpg",
+            "alt": "Gestión Financiera Inteligente",
+            "description": "Gestión Financiera Inteligente"
+        }
+    ],
+    "footerText": "Ir a .."
+}
