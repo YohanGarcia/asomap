@@ -203,12 +203,33 @@ CORS_ALLOW_HEADERS = [
     'pragma',
 ]
 
-# Permitir todos los orígenes para desarrollo local
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = False
+# Configuraciones adicionales para evitar problemas de CORS
+CORS_EXPOSE_HEADERS = [
+    'content-type',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
-# Configuración específica para producción (cuando se despliegue)
-if not DEBUG:
+CORS_PREFLIGHT_MAX_AGE = 86400  # 24 horas
+
+# Configuración específica para desarrollo
+if DEBUG:
+    CORS_ORIGIN_ALLOW_ALL = True
+    CORS_ALLOW_CREDENTIALS = False
+else:
+    CORS_ORIGIN_ALLOW_ALL = False
+    CORS_ALLOW_CREDENTIALS = True
+
+# Configuración de CORS base
+CORS_ALLOW_CREDENTIALS = True
+
+# Configuración específica para desarrollo vs producción
+if DEBUG:
+    # En desarrollo, permitir todos los orígenes locales
+    CORS_ALLOW_ALL_ORIGINS = True
+    CORS_ALLOW_CREDENTIALS = False
+else:
+    # En producción, solo orígenes específicos
     CORS_ALLOW_ALL_ORIGINS = False
     CORS_ALLOW_CREDENTIALS = True
 
@@ -579,6 +600,15 @@ import os
 os.makedirs(MEDIA_ROOT, exist_ok=True)
 os.makedirs(STATIC_ROOT, exist_ok=True)
 
+# Configuración del servidor desde variables de entorno
+SERVER_IP = config('SERVER_IP', default='localhost')
+SERVER_PORT = config('SERVER_PORT', default='8080')
+SERVER_PROTOCOL = config('SERVER_PROTOCOL', default='http')
+
+# Generar URLs del servidor dinámicamente
+SERVER_URL = f"{SERVER_PROTOCOL}://{SERVER_IP}"
+SERVER_URL_WITH_PORT = f"{SERVER_PROTOCOL}://{SERVER_IP}:{SERVER_PORT}"
+
 # Configuración de seguridad para producción
 if not DEBUG:
     SECURE_BROWSER_XSS_FILTER = True
@@ -587,9 +617,24 @@ if not DEBUG:
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     X_FRAME_OPTIONS = 'DENY'
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
+    
+    # Configuración de SSL (solo si usas HTTPS)
+    if SERVER_PROTOCOL == 'https':
+        SECURE_SSL_REDIRECT = True
+        SESSION_COOKIE_SECURE = True
+        CSRF_COOKIE_SECURE = True
+    else:
+        # Para servidores con IP directa sin HTTPS
+        SECURE_SSL_REDIRECT = False
+        SESSION_COOKIE_SECURE = False
+        CSRF_COOKIE_SECURE = False
+    
+    # Configuración de cookies para IPs directas
+    if SERVER_IP != 'localhost':
+        CSRF_COOKIE_DOMAIN = None  # Para IPs directas
+        SESSION_COOKIE_DOMAIN = None  # Para IPs directas
+        CSRF_COOKIE_HTTPONLY = False  # Permitir acceso desde JavaScript
+        SESSION_COOKIE_HTTPONLY = True  # Seguridad de sesión
 
 # Configuración de CORS para producción
 if not DEBUG:
@@ -598,41 +643,64 @@ if not DEBUG:
     if _frontend_urls:
         CORS_ALLOWED_ORIGINS = Csv()(_frontend_urls)
     else:
+        # Incluir automáticamente la IP del servidor
         CORS_ALLOWED_ORIGINS = [
-            'https://asomap-frontend.vercel.app',
-            'https://asomap.vercel.app',
+            SERVER_URL,
+            SERVER_URL_WITH_PORT,
             'https://asomap.com',
         ]
 else:
+    # En desarrollo, incluir tu IP del servidor también
+    default_origins = [
+        'http://localhost:4321',
+        'http://127.0.0.1:3000', 
+        'http://localhost:8080',
+        'http://127.0.0.1:8080',
+        'http://192.168.54.10:8080',  # Tu IP del servidor
+        'http://192.168.54.10:3000',  # Tu IP para desarrollo
+    ]
+    
     CORS_ALLOWED_ORIGINS = config(
         'CORS_ALLOWED_ORIGINS',
-        default='http://localhost:4321,http://127.0.0.1:3000,http://localhost:8080,http://127.0.0.1:8080',
+        default=','.join(default_origins),
         cast=Csv()
     )
 
 # CSRF Trusted Origins (necesario cuando se usa HTTPS y cookies)
-CSRF_TRUSTED_ORIGINS = config(
-    'CSRF_TRUSTED_ORIGINS',
-    default='http://localhost:3000,http://127.0.0.1:3000,http://localhost:8080,http://127.0.0.1:8080',
-    cast=Csv()
-)
-
-# En producción, si se define FRONTEND_URL, usarlo también para CSRF_TRUSTED_ORIGINS
 if not DEBUG:
-    _frontend_urls = config('FRONTEND_URL', default=None)
-    if _frontend_urls:
-        CSRF_TRUSTED_ORIGINS = Csv()(_frontend_urls)
+    # Incluir automáticamente la IP del servidor
+    CSRF_TRUSTED_ORIGINS = [
+        SERVER_URL,
+        SERVER_URL_WITH_PORT,
+        'https://asomap.com',
+    ]
+    
+    # Permitir override desde variables de entorno
+    _env_csrf_origins = config('CSRF_TRUSTED_ORIGINS', default=None)
+    if _env_csrf_origins:
+        CSRF_TRUSTED_ORIGINS.extend(Csv()(_env_csrf_origins))
+else:
+    CSRF_TRUSTED_ORIGINS = config(
+        'CSRF_TRUSTED_ORIGINS',
+        default='http://localhost:3000,http://127.0.0.1:3000,http://localhost:8080,http://127.0.0.1:8080',
+        cast=Csv()
+    )
 
 # Configuración de ALLOWED_HOSTS
 if not DEBUG:
-    # Permitir override desde variables de entorno en producción
+    # Incluir automáticamente la IP del servidor
+    ALLOWED_HOSTS = [
+        SERVER_IP,
+        'localhost',
+        '127.0.0.1',
+        'asomap.com',
+        'www.asomap.com',
+    ]
+    
+    # Permitir override desde variables de entorno
     _env_allowed_hosts = config('ALLOWED_HOSTS', default=None)
     if _env_allowed_hosts:
-        ALLOWED_HOSTS = Csv()(str(_env_allowed_hosts))
-    else:
-        ALLOWED_HOSTS = [
-            '*',  # Permitir todos los hosts (puedes restringirlo en variables de entorno)
-        ]
+        ALLOWED_HOSTS.extend(Csv()(str(_env_allowed_hosts)))
 else:
     ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='localhost,127.0.0.1', cast=Csv())
 

@@ -46,10 +46,10 @@ export const getImageUrl = (relativePath: string) => {
     // Remove leading slash if present
     const cleanPath = relativePath.startsWith('/') ? relativePath.slice(1) : relativePath;
     
-    // Get backend base URL without /api suffix
-    const backendBaseUrl = API_CONFIG.BASE_URL.replace('/api', '');
+    // Use Vite environment variables for media URL
+    const mediaBaseUrl = import.meta.env.VITE_MEDIA_BASE_URL || API_CONFIG.BASE_URL.replace('/api', '');
     
-    return `${backendBaseUrl}/${cleanPath}`;
+    return `${mediaBaseUrl}/${cleanPath}`;
 };
 
 // Environment-specific configurations
@@ -60,7 +60,12 @@ export const getEnvironmentConfig = () => {
         isStaging: API_CONFIG.IS_STAGING,
         baseUrl: API_CONFIG.BASE_URL,
         timeout: API_CONFIG.TIMEOUT,
-        features: API_CONFIG.FEATURES
+        features: API_CONFIG.FEATURES,
+        serverIP: import.meta.env.VITE_SERVER_IP,
+        serverPort: import.meta.env.VITE_SERVER_PORT,
+        nginxUrl: import.meta.env.VITE_NGINX_URL,
+        backendUrl: import.meta.env.VITE_BACKEND_URL,
+        mediaBaseUrl: import.meta.env.VITE_MEDIA_BASE_URL
     };
 };
 

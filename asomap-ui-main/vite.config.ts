@@ -1,31 +1,43 @@
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
-export default defineConfig({
-  plugins: [react()],
-  build: {
-    outDir: 'build',
-  },
-  server: {
-    host: true,
-    port: 4321,
-    proxy: {
-      '/mock': {
-        target: 'http://localhost:4321',
-        rewrite: (path) => path.replace(/^\/mock/, '/public/mock')
-      },
-      '/api': {
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '/api')
-      },
-      '/media': {
-        target: 'http://localhost:8080',
-        changeOrigin: true
+export default defineConfig(({ mode }) => {
+  // Cargar variables de entorno desde la raíz del proyecto
+  const env = loadEnv(mode, '../', ['SERVER_IP', 'SERVER_PORT', 'SERVER_PROTOCOL']);
+  
+  // Configurar URLs del servidor
+  const serverIP = env.SERVER_IP || 'localhost';
+  const serverPort = env.SERVER_PORT || '8080';
+  const serverProtocol = env.SERVER_PROTOCOL || 'http';
+  
+  const nginxUrl = `${serverProtocol}://${serverIP}:${serverPort}`;
+  const backendUrl = `${serverProtocol}://${serverIP}:8000`;
+  
+  return {
+    plugins: [react()],
+    build: {
+      outDir: 'build',
+    },
+    server: {
+      host: true,
+      port: 4321,
+      proxy: {
+        '/mock': {
+          target: 'http://localhost:4321',
+          rewrite: (path) => path.replace(/^\/mock/, '/public/mock')
+        },
+        '/api': {
+          target: nginxUrl,
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, '/api')
+        },
+        '/media': {
+          target: nginxUrl,
+          changeOrigin: true
+        }
       }
-    }
-  },
+    },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -48,10 +60,19 @@ export default defineConfig({
       '@constants': path.resolve(__dirname, './src/constants'),
     },
   },
-  define: {
-    'process.env': {},
-  },
-  optimizeDeps: {
-    include: ['util'],
-  },
+    define: {
+      'process.env': {
+        VITE_SERVER_IP: JSON.stringify(serverIP),
+        VITE_SERVER_PORT: JSON.stringify(serverPort),
+        VITE_SERVER_PROTOCOL: JSON.stringify(serverProtocol),
+        VITE_NGINX_URL: JSON.stringify(nginxUrl),
+        VITE_BACKEND_URL: JSON.stringify(backendUrl),
+        VITE_API_BASE_URL: JSON.stringify(`${nginxUrl}/api`),
+        VITE_MEDIA_BASE_URL: JSON.stringify(`${nginxUrl}/media`),
+      },
+    },
+    optimizeDeps: {
+      include: ['util'],
+    },
+  };
 });

@@ -11,8 +11,8 @@ export const API_CONFIG = {
     
     // API URLs based on environment
     BASE_URL: ENV === 'development' 
-        ? 'http://localhost:8080/api'
-        : import.meta.env.VITE_API_URL || 'https://api.asomap.com/api',
+        ? import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080/api'
+        : import.meta.env.VITE_API_BASE_URL || 'https://api.asomap.com/api',
     
     // Timeouts
     TIMEOUT: ENV === 'development' ? 10000 : 60000, // Aumentar timeout en producción
@@ -42,5 +42,10 @@ console.log('🚀 ASOMAP API Configuration:', {
     timeout: API_CONFIG.TIMEOUT,
     features: API_CONFIG.FEATURES,
     googleMapsApiKey: API_CONFIG.GOOGLE_MAPS_API_KEY ? '✅ Configured' : '❌ Missing',
-    viteApiUrl: import.meta.env.VITE_API_URL || 'Not set'
+    serverIP: import.meta.env.VITE_SERVER_IP || 'Not set',
+    serverPort: import.meta.env.VITE_SERVER_PORT || 'Not set',
+    nginxUrl: import.meta.env.VITE_NGINX_URL || 'Not set',
+    backendUrl: import.meta.env.VITE_BACKEND_URL || 'Not set',
+    apiBaseUrl: import.meta.env.VITE_API_BASE_URL || 'Not set',
+    mediaBaseUrl: import.meta.env.VITE_MEDIA_BASE_URL || 'Not set'
 });

@@ -21,12 +21,32 @@ if [ ! -f .env ]; then
     echo "✅ Archivo .env creado. Revisa y modifica las variables según necesites."
 fi
 
-# Construir el frontend primero
+# Verificar que las variables de entorno estén configuradas
+echo "🔍 Verificando configuración del servidor..."
+if [ -f .env ]; then
+    source .env
+    if [ -z "$SERVER_IP" ]; then
+        echo "❌ SERVER_IP no está configurada en .env"
+        echo "💡 Configura SERVER_IP=192.168.54.10 en tu archivo .env"
+        exit 1
+    fi
+    echo "✅ Servidor configurado para IP: $SERVER_IP"
+else
+    echo "❌ No se pudo cargar el archivo .env"
+    exit 1
+fi
+
+# Construir el frontend usando el script existente
 echo "📦 Construyendo frontend..."
-cd asomap-ui-main
-yarn install
-yarn build
-cd ..
+if [ -f "build-frontend.sh" ]; then
+    ./build-frontend.sh
+else
+    echo "⚠️  build-frontend.sh no encontrado, construyendo manualmente..."
+    cd asomap-ui-main
+    yarn install
+    yarn build
+    cd ..
+fi
 
 # Construir las imágenes Docker
 echo "🐳 Construyendo imágenes Docker..."
@@ -49,11 +69,11 @@ fi
 echo "✅ Servicios iniciados exitosamente!"
 echo ""
 echo "🌐 URLs disponibles:"
-echo "   • Aplicación principal: http://localhost:8080"
-echo "   • Backend API: http://localhost:8000"
-echo "   • Admin de Django: http://localhost:8080/admin"
-echo "   • API Swagger: http://localhost:8000/api/schema/swagger-ui/"
-echo "   • Health Check: http://localhost:8000/health/"
+echo "   • Aplicación principal: http://$SERVER_IP:8080"
+echo "   • Backend API: http://$SERVER_IP:8000"
+echo "   • Admin de Django: http://$SERVER_IP:8080/admin"
+echo "   • API Swagger: http://$SERVER_IP:8000/api/schema/swagger-ui/"
+echo "   • Health Check: http://$SERVER_IP:8000/health/"
 echo ""
 echo "📋 Comandos útiles:"
 echo "   • Ver logs: docker compose logs -f"
@@ -72,4 +92,14 @@ docker compose ps
 
 echo ""
 echo "🎉 ¡ASOMAP está listo en modo producción!"
-echo "💡 Para modo desarrollo: ./asomap/dev-mode.sh"
+echo ""
+echo "🔧 Configuración aplicada:"
+echo "   • IP del servidor: $SERVER_IP"
+echo "   • ALLOWED_HOSTS: Configurado para $SERVER_IP"
+echo "   • CSRF_TRUSTED_ORIGINS: Configurado para $SERVER_IP"
+echo "   • CORS_ALLOWED_ORIGINS: Configurado para $SERVER_IP"
+echo "   • CORS_ORIGIN_ALLOW_ALL: $(if [ "$DEBUG" = "False" ]; then echo "False (Producción)"; else echo "True (Desarrollo)"; fi)"
+echo "   • CORS_ALLOW_CREDENTIALS: $(if [ "$DEBUG" = "False" ]; then echo "True (Producción)"; else echo "False (Desarrollo)"; fi)"
+echo ""
+echo "💡 Para modo desarrollo: ./dev-mode.sh"
+echo "💡 Para ver logs: docker compose logs -f"
