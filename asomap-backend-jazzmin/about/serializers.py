@@ -75,6 +75,7 @@ class CommunityInitiativeSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'title', 'description', 'impact', 
             'image_src', 'image_alt', 'category', 'category_id',
+            'year', 'location', 'beneficiaries',
             'is_active', 'created_at', 'updated_at'
         ]
 

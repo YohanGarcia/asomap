@@ -62,7 +62,7 @@ export const menuService = {
       const loansMenuItems: MenuAccountItem[] = loans.map(loan => ({
         text: loan.title,
         href: `/productos/prestamo/${loan.slug}`,
-        image: 'https://images.unsplash.com/photo-1554224155-8947307dabb2?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
+        image: loan.bannerImage || 'https://images.unsplash.com/photo-1554224155-8947307dabb2?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80',
         category: loan.loanType
       }));
 

@@ -1,8 +1,55 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { footerData } from '@/mocks';
+import { socialNetworksService, contactsService } from '@/api';
+import type { ISocialNetworkData, IContactData } from '@/interfaces';
+import * as FaIcons from 'react-icons/fa';
 
 export const Footer: React.FC = () => {
+    const [socialNetworks, setSocialNetworks] = useState<ISocialNetworkData[]>([]);
+    const [contacts, setContacts] = useState<IContactData[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                console.log('🔄 Fetching footer data...');
+                
+                const [socialNetworksResponse, contactsResponse] = await Promise.all([
+                    socialNetworksService.getAllSocialNetworks(),
+                    contactsService.getAllContacts()
+                ]);
+                
+                console.log('📱 Social Networks Response:', socialNetworksResponse);
+                console.log('📞 Contacts Response:', contactsResponse);
+                
+                setSocialNetworks(socialNetworksResponse.results);
+                setContacts(contactsResponse.results);
+                
+                console.log('✅ Footer data loaded successfully');
+            } catch (error) {
+                console.error('❌ Error fetching footer data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    // Función para obtener el icono de React Icons
+    const getIconComponent = (iconName: string) => {
+        const IconComponent = (FaIcons as any)[iconName];
+        if (IconComponent) {
+            return IconComponent;
+        }
+        return FaIcons.FaQuestion; // Fallback icon
+    };
+
+    // Debug logs
+    console.log('🔍 Footer State:', { loading, socialNetworks, contacts });
+
     return (
         <footer className="bg-gradient-to-b from-white to-gray-50 text-gray-800 py-16">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -47,7 +94,38 @@ export const Footer: React.FC = () => {
                                     ))}
                                 </ul>
                             ) : (
-                                section.icons && (
+                                key === 'follow' ? (
+                                    loading ? (
+                                        <div className="flex space-x-6">
+                                            {[...Array(5)].map((_, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="w-6 h-6 bg-gray-200 rounded animate-pulse"
+                                                />
+                                            ))}
+                                        </div>
+                                    ) : socialNetworks.length > 0 ? (
+                                        <div className="flex space-x-6">
+                                            {socialNetworks.map((socialNetwork) => {
+                                                const IconComponent = getIconComponent(socialNetwork.icon);
+                                                return (
+                                                    <a
+                                                        key={socialNetwork.id}
+                                                        href={socialNetwork.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="transform hover:scale-110 transition-transform duration-300 text-gray-600 hover:text-primary"
+                                                        title={socialNetwork.name}
+                                                    >
+                                                        <IconComponent className="w-6 h-6" />
+                                                    </a>
+                                                );
+                                            })}
+                                        </div>
+                                    ) : (
+                                        <div className="text-gray-500 text-sm">No hay redes sociales disponibles</div>
+                                    )
+                                ) : section.icons && (
                                     <div className="flex space-x-6">
                                         {section.icons.map((icon, index) => (
                                             <a
@@ -65,27 +143,44 @@ export const Footer: React.FC = () => {
                                     </div>
                                 )
                             )}
-                            {key === 'follow' && section.address && (
+                            {/* Sección de Contactos desde API */}
+                            {key === 'follow' && (
                                 <div className="space-y-4 mt-8">
                                     <h3 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
-                                        {footerData.location.title}
+                                        Contacto
                                     </h3>
-                                    <div className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-300">
-                                        <p className="flex items-start text-gray-600 text-sm">
-                                            <span className="mr-3 mt-1 flex-shrink-0 text-primary">
-                                                {React.createElement(footerData.location.icon, {
-                                                    className: "w-5 h-5"
-                                                })}
-                                            </span>
-                                            <span>{section.address}</span>
-                                        </p>
-                                        <Link
-                                            to={section.url || '#'}
-                                            className="inline-block mt-3 text-primary hover:text-primary-dark transition-colors duration-300 text-sm font-medium"
-                                        >
-                                            {section.link}
-                                        </Link>
-                                    </div>
+                                    {loading ? (
+                                        <div className="space-y-3">
+                                            {[...Array(3)].map((_, index) => (
+                                                <div key={index} className="flex items-center space-x-3">
+                                                    <div className="w-4 h-4 bg-gray-200 rounded animate-pulse" />
+                                                    <div className="h-4 bg-gray-200 rounded animate-pulse flex-1 max-w-32" />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : contacts.length > 0 ? (
+                                        <div className="space-y-3">
+                                            {contacts.map((contact) => {
+                                                const IconComponent = getIconComponent(contact.icon);
+                                                return (
+                                                    <a
+                                                        key={contact.id}
+                                                        href={contact.url}
+                                                        target={contact.url.startsWith('http') ? '_blank' : undefined}
+                                                        rel={contact.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                                                        className="flex items-center space-x-3 text-gray-600 hover:text-primary transition-colors duration-300 group"
+                                                    >
+                                                        <span className="flex-shrink-0 text-primary group-hover:scale-110 transition-transform duration-300">
+                                                            <IconComponent className="w-4 h-4" />
+                                                        </span>
+                                                        <span className="text-sm">{contact.name}</span>
+                                                    </a>
+                                                );
+                                            })}
+                                        </div>
+                                    ) : (
+                                        <div className="text-gray-500 text-sm">No hay contactos disponibles</div>
+                                    )}
                                 </div>
                             )}
                         </div>

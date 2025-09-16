@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { fraudReportData } from '@/mocks';
-import { fraudReportService } from '@/api';
-import type { ISubmitFraudReport } from '@/interfaces';
+import { fraudReportService, fraudReportPageService } from '@/api';
+import type { ISubmitFraudReport, IFraudReportPageData } from '@/interfaces';
 
 interface FormData {
     classification: string;
@@ -28,6 +28,53 @@ const FraudReport: React.FC = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
+    const [pageData, setPageData] = useState<IFraudReportPageData | null>(null);
+    const [isLoadingPage, setIsLoadingPage] = useState(true);
+
+    // Función para resetear el estado del formulario
+    const resetFormState = () => {
+        console.log('🔄 Reseteando formulario manualmente...');
+        setIsSubmitted(false);
+        setSuccessMessage('');
+        setError(null);
+        setFormData({
+            classification: '',
+            fullName: '',
+            document: '',
+            phone: '',
+            email: '',
+            file: null,
+            message: ''
+        });
+        console.log('✅ Formulario reseteado manualmente');
+    };
+
+    // Cargar datos de la página al montar el componente
+    useEffect(() => {
+        const loadPageData = async () => {
+            try {
+                setIsLoadingPage(true);
+                const data = await fraudReportPageService.getFraudReportPage();
+                setPageData(data);
+            } catch (error) {
+                console.error('Error loading fraud report page data:', error);
+                // En caso de error, usar datos mock como fallback
+                setPageData({
+                    id: 0,
+                    title: fraudReportData.title,
+                    description: fraudReportData.description,
+                    isActive: true,
+                    createdAt: '',
+                    updatedAt: ''
+                });
+            } finally {
+                setIsLoadingPage(false);
+            }
+        };
+
+        loadPageData();
+    }, []);
+
 
     const formatDocument = (value: string) => {
         const numbers = value.replace(/\D/g, '').slice(0, 11);
@@ -136,7 +183,7 @@ const FraudReport: React.FC = () => {
             setSuccessMessage(backendMessage);
             setIsSubmitted(true);
             
-            // Limpiar formulario
+            // Limpiar formulario pero mantener el estado de éxito
             setFormData({
                 classification: '',
                 fullName: '',
@@ -146,7 +193,13 @@ const FraudReport: React.FC = () => {
                 file: null,
                 message: ''
             });
-            setIsSubmitted(false)
+
+            // Auto-reset después de 5 segundos
+            setTimeout(() => {
+                console.log('🔄 Auto-reset del formulario después de 3 segundos...');
+                setIsSubmitted(false);
+                setSuccessMessage('');
+            }, 3000);
         } catch (error) {
             setError('Error al enviar el formulario. Por favor, inténtelo nuevamente.');
         } finally {
@@ -169,12 +222,23 @@ const FraudReport: React.FC = () => {
                             animate={{ opacity: 1, x: 0 }}
                             className="pr-4 md:pr-12"
                         >
-                            <h1 className="text-[#2B4BA9] text-2xl font-bold mb-4">
-                                {fraudReportData.title}
-                            </h1>
-                            <p className="text-gray-600 text-sm leading-relaxed">
-                                {fraudReportData.description}
-                            </p>
+                            {isLoadingPage ? (
+                                <div className="animate-pulse">
+                                    <div className="h-8 bg-gray-200 rounded mb-4"></div>
+                                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                                </div>
+                            ) : (
+                                <>
+                                    <h1 className="text-[#2B4BA9] text-2xl font-bold mb-4">
+                                        {pageData?.title || fraudReportData.title}
+                                    </h1>
+                                    <p className="text-gray-600 text-sm leading-relaxed">
+                                        {pageData?.description || fraudReportData.description}
+                                    </p>
+                                </>
+                            )}
                         </motion.div>
 
                         {/* Columna derecha - Formulario */}
@@ -190,20 +254,29 @@ const FraudReport: React.FC = () => {
                                         animate={{ opacity: 1, y: 0 }}
                                         className="mb-4 p-3 bg-green-50 border border-green-200 rounded-lg"
                                     >
-                                        <div className="flex items-center">
-                                            <div className="flex-shrink-0">
-                                                <svg className="h-4 w-4 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                                </svg>
+                                        <div className="flex items-center justify-between">
+                                            <div className="flex items-center">
+                                                <div className="flex-shrink-0">
+                                                    <svg className="h-4 w-4 text-green-400" viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                                                    </svg>
+                                                </div>
+                                                <div className="ml-2">
+                                                    <h3 className="text-xs font-medium text-green-800">
+                                                        {successMessage}
+                                                    </h3>
+                                                    <p className="text-xs text-green-700 mt-1">
+                                                        Por favor, revise su correo electrónico para más información.
+                                                    </p>
+                                                </div>
                                             </div>
-                                            <div className="ml-2">
-                                                <h3 className="text-xs font-medium text-green-800">
-                                                    {successMessage}
-                                                </h3>
-                                                <p className="text-xs text-green-700 mt-1">
-                                                    Por favor, revise su correo electrónico para más información.
-                                                </p>
-                                            </div>
+                                            <button
+                                                type="button"
+                                                onClick={resetFormState}
+                                                className="ml-2 px-2 py-1 text-xs bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+                                            >
+                                                Enviar otro
+                                            </button>
                                         </div>
                                     </motion.div>
                                 )}

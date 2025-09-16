@@ -3,10 +3,13 @@ from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.utils.html import format_html
 from .models import (
-    Account, Loan, Card, Certificate, 
+    Account, Loan, LoanType, Card, Certificate, Banner,
     AccountBenefit, CardBenefit, 
     CertificateBenefit, CertificateRate, CertificateDepositRate, CertificateFAQ
 )
+
+# Importar configuración del admin
+from . import admin_config
 
 class BaseModelAdmin(admin.ModelAdmin):
     """Clase base para limpiar formularios después de guardar"""
@@ -215,13 +218,17 @@ class LoanAdmin(BaseModelAdmin):
         ('Información Básica', {
             'fields': ('title', 'description', 'loan_type')
         }),
+        ('Imagen del Banner', {
+            'fields': ('banner_image',),
+            'description': 'Imagen principal del préstamo para el banner'
+        }),
         ('Detalles del Préstamo', {
             'fields': ('details',),
-            'description': 'Detalles del préstamo separados por comas'
+            'description': 'Detalles del préstamo separados por /'
         }),
         ('Requisitos', {
             'fields': ('requirements_title', 'requirements'),
-            'description': 'Título y requisitos del préstamo separados por comas'
+            'description': 'Título y requisitos del préstamo separados por /'
         }),
         ('Estado', {
             'fields': ('is_active',)
@@ -317,3 +324,74 @@ class CertificateAdmin(BaseModelAdmin):
             'classes': ('collapse',)
         }),
     )
+
+
+@admin.register(Banner)
+class BannerAdmin(BaseModelAdmin):
+    list_display = ('title', 'order', 'is_active', 'button1_name', 'button2_name', 'created_at')
+    list_filter = ('is_active', 'created_at')
+    search_fields = ('title', 'description')
+    ordering = ('order', 'title')
+    
+    def has_add_permission(self, request):
+        """
+        Solo permite agregar un banner si no existe ninguno activo
+        """
+        if Banner.objects.filter(is_active=True).exists():
+            return False
+        return True
+    
+    def get_queryset(self, request):
+        """
+        Limita a mostrar solo un banner
+        """
+        # Obtener el primer banner ordenado
+        first_banner = Banner.objects.all().order_by('order', 'title').first()
+        if first_banner:
+            return Banner.objects.filter(id=first_banner.id)
+        return Banner.objects.none()
+    
+    fieldsets = (
+        ('Información Básica', {
+            'fields': ('title', 'description')
+        }),
+        ('Botón 1', {
+            'fields': ('button1_name', 'button1_url')
+        }),
+        ('Botón 2', {
+            'fields': ('button2_name', 'button2_url')
+        }),
+        ('Configuración', {
+            'fields': ('is_active', 'order')
+        }),
+        ('Fechas', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    readonly_fields = ('created_at', 'updated_at')
+
+
+@admin.register(LoanType)
+class LoanTypeAdmin(BaseModelAdmin):
+    list_display = ('name', 'slug', 'is_active', 'order', 'created_at')
+    list_filter = ('is_active', 'created_at')
+    search_fields = ('name', 'description')
+    ordering = ('order', 'name')
+    prepopulated_fields = {'slug': ('name',)}
+    
+    fieldsets = (
+        ('Información Básica', {
+            'fields': ('name', 'slug', 'description')
+        }),
+        ('Configuración', {
+            'fields': ('is_active', 'order')
+        }),
+        ('Fechas', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    readonly_fields = ('created_at', 'updated_at')

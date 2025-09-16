@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 from .models import (
     Hero, QuienesSomos, NuestraHistoria, 
     Mision, Vision, Valor, Director,
@@ -65,14 +66,107 @@ class CommunityCategoryAdmin(admin.ModelAdmin):
     search_fields = ['name', 'description']
     readonly_fields = ['created_at', 'updated_at']
     ordering = ['id']
+    
+    fieldsets = (
+        ('Información Básica', {
+            'fields': ('name', 'description')
+        }),
+        ('Icono', {
+            'fields': ('icon',),
+            'description': mark_safe('''
+            <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; margin: 10px 0; border-left: 4px solid #007bff;">
+                <h4 style="margin-top: 0; color: #007bff;">📚 Guía de Iconos - React Icons</h4>
+                <p><strong>Para encontrar el nombre correcto del icono:</strong></p>
+                <ol>
+                    <li>Visita: <a href="https://react-icons.github.io/react-icons/search/#q=fa" target="_blank" style="color: #007bff; text-decoration: none;">React Icons Library</a></li>
+                    <li>Busca el icono que necesitas (ej: "heart", "star", "user")</li>
+                    <li>Copia el nombre exacto del icono (ej: "FaHeart", "FaStar", "FaUser")</li>
+                    <li>Pégalo en el campo "Icono" de arriba</li>
+                </ol>
+                <p><strong>Ejemplos de iconos populares:</strong></p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin: 10px 0;">
+                    <div style="background: white; padding: 8px; border-radius: 3px; border: 1px solid #dee2e6;">
+                        <code style="color: #e83e8c;">FaHeart</code> (corazón)
+                    </div>
+                    <div style="background: white; padding: 8px; border-radius: 3px; border: 1px solid #dee2e6;">
+                        <code style="color: #e83e8c;">FaStar</code> (estrella)
+                    </div>
+                    <div style="background: white; padding: 8px; border-radius: 3px; border: 1px solid #dee2e6;">
+                        <code style="color: #e83e8c;">FaUser</code> (usuario)
+                    </div>
+                    <div style="background: white; padding: 8px; border-radius: 3px; border: 1px solid #dee2e6;">
+                        <code style="color: #e83e8c;">FaHome</code> (casa)
+                    </div>
+                    <div style="background: white; padding: 8px; border-radius: 3px; border: 1px solid #dee2e6;">
+                        <code style="color: #e83e8c;">FaBook</code> (libro)
+                    </div>
+                    <div style="background: white; padding: 8px; border-radius: 3px; border: 1px solid #dee2e6;">
+                        <code style="color: #e83e8c;">FaGraduationCap</code> (educación)
+                    </div>
+                    <div style="background: white; padding: 8px; border-radius: 3px; border: 1px solid #dee2e6;">
+                        <code style="color: #e83e8c;">FaHandsHelping</code> (ayuda)
+                    </div>
+                    <div style="background: white; padding: 8px; border-radius: 3px; border: 1px solid #dee2e6;">
+                        <code style="color: #e83e8c;">FaUsers</code> (grupo)
+                    </div>
+                    <div style="background: white; padding: 8px; border-radius: 3px; border: 1px solid #dee2e6;">
+                        <code style="color: #e83e8c;">FaChild</code> (niño)
+                    </div>
+                    <div style="background: white; padding: 8px; border-radius: 3px; border: 1px solid #dee2e6;">
+                        <code style="color: #e83e8c;">FaTree</code> (árbol)
+                    </div>
+                    <div style="background: white; padding: 8px; border-radius: 3px; border: 1px solid #dee2e6;">
+                        <code style="color: #e83e8c;">FaGlobe</code> (mundo)
+                    </div>
+                    <div style="background: white; padding: 8px; border-radius: 3px; border: 1px solid #dee2e6;">
+                        <code style="color: #e83e8c;">FaHandHoldingHeart</code> (solidaridad)
+                    </div>
+                </div>
+                <div style="background: #d1ecf1; padding: 10px; border-radius: 3px; border-left: 4px solid #bee5eb; margin-top: 15px;">
+                    <p style="margin: 0; font-size: 13px; color: #0c5460;">
+                        💡 <strong>Tip:</strong> Los iconos de Font Awesome (Fa) son los más utilizados. 
+                        Asegúrate de usar la nomenclatura exacta que aparece en la librería.
+                    </p>
+                </div>
+            </div>
+            ''')
+        }),
+        ('Estado', {
+            'fields': ('is_active',)
+        }),
+        ('Fechas', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
 
 @admin.register(CommunityInitiative)
 class CommunityInitiativeAdmin(admin.ModelAdmin):
-    list_display = ['title', 'category', 'is_active', 'created_at', 'updated_at']
-    list_filter = ['is_active', 'created_at', 'category']
-    search_fields = ['title', 'description', 'impact']
+    list_display = ['title', 'category', 'year', 'location', 'is_active', 'created_at']
+    list_filter = ['is_active', 'created_at', 'category', 'year']
+    search_fields = ['title', 'description', 'impact', 'location', 'beneficiaries']
     readonly_fields = ['created_at', 'updated_at']
-    ordering = ['category', 'id']
+    ordering = ['category', 'year', 'id']
+    
+    fieldsets = (
+        ('Información Básica', {
+            'fields': ('title', 'description', 'impact')
+        }),
+        ('Detalles de la Iniciativa', {
+            'fields': ('year', 'location', 'beneficiaries', 'category')
+        }),
+        ('Imagen', {
+            'fields': ('image_src', 'image_alt'),
+            'description': 'Imagen representativa de la iniciativa'
+        }),
+        ('Estado', {
+            'fields': ('is_active',)
+        }),
+        ('Fechas', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
 
 @admin.register(CommunitySupport)
 class CommunitySupportAdmin(admin.ModelAdmin):

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { suggestionBoxData } from '@/mocks';
-import { suggestionBoxService } from '@/api';
-import type { IProvinceData } from '@/interfaces';
+import { suggestionBoxService, suggestionBoxPageService } from '@/api';
+import type { IProvinceData, ISuggestionBoxPageData } from '@/interfaces';
 
 interface SuggestionFormData {
     classification: string;
@@ -30,21 +30,43 @@ const SuggestionBox: React.FC = () => {
     const [error, setError] = useState<string | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [pageData, setPageData] = useState<ISuggestionBoxPageData | null>(null);
+    const [isLoadingPage, setIsLoadingPage] = useState(true);
 
     useEffect(() => {
-        const fetchProvinces = async () => {
+        const fetchData = async () => {
             try {
                 setLoading(true);
-                const provincesData = await suggestionBoxService.getProvinces();
+                setIsLoadingPage(true);
+                
+                // Cargar provincias y datos de la página en paralelo
+                const [provincesData, pageDataResult] = await Promise.all([
+                    suggestionBoxService.getProvinces(),
+                    suggestionBoxPageService.getSuggestionBoxPage()
+                ]);
+                
                 setProvinces(provincesData);
+                setPageData(pageDataResult);
             } catch (err) {
-                setError(err instanceof Error ? err.message : 'Error al cargar las provincias');
+                console.error('Error loading data:', err);
+                setError(err instanceof Error ? err.message : 'Error al cargar los datos');
+                
+                // En caso de error, usar datos mock como fallback para la página
+                setPageData({
+                    id: 0,
+                    title: suggestionBoxData.title,
+                    description: suggestionBoxData.description,
+                    isActive: true,
+                    createdAt: '',
+                    updatedAt: ''
+                });
             } finally {
                 setLoading(false);
+                setIsLoadingPage(false);
             }
         };
 
-        fetchProvinces();
+        fetchData();
     }, []);
 
     const validateDocument = (value: string) => {
@@ -182,12 +204,23 @@ const SuggestionBox: React.FC = () => {
                             animate={{ opacity: 1, x: 0 }}
                             className="pr-4 md:pr-12"
                         >
-                            <h1 className="text-[#2B4BA9] text-2xl font-bold mb-4">
-                                {suggestionBoxData.title}
-                            </h1>
-                            <p className="text-gray-600 text-sm leading-relaxed">
-                                {suggestionBoxData.description}
-                            </p>
+                            {isLoadingPage ? (
+                                <div className="animate-pulse">
+                                    <div className="h-8 bg-gray-200 rounded mb-4"></div>
+                                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                                </div>
+                            ) : (
+                                <>
+                                    <h1 className="text-[#2B4BA9] text-2xl font-bold mb-4">
+                                        {pageData?.title || suggestionBoxData.title}
+                                    </h1>
+                                    <p className="text-gray-600 text-sm leading-relaxed">
+                                        {pageData?.description || suggestionBoxData.description}
+                                    </p>
+                                </>
+                            )}
                         </motion.div>
 
                         {/* Columna derecha - Formulario */}

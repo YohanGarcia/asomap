@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import News, Promotion
+from .models import News, Promotion, NewsMedia
 
 
 @admin.register(News)
@@ -24,10 +24,15 @@ class NewsAdmin(admin.ModelAdmin):
             'fields': ('full_content',),
             'description': 'Editor de texto enriquecido para el contenido completo de la noticia'
         }),
-        ('Media Adicional', {
+        ('📁 Archivos de Media', {
+            'fields': (),
+            'classes': ('collapse',),
+            'description': '💡 Para agregar archivos de media (imágenes, videos, documentos), ve a "News > Archivos de Media" después de guardar esta noticia. El nuevo sistema permite subir archivos reales con descripciones y orden personalizado.'
+        }),
+        ('Media Adicional (DEPRECADO)', {
             'fields': ('media_urls',),
             'classes': ('collapse',),
-            'description': 'URLs de imágenes/videos separadas por comas'
+            'description': '⚠️ DEPRECADO: Usa "Archivos de Media" en su lugar. URLs de imágenes/videos separadas por comas (solo para compatibilidad)'
         }),
         ('Enlaces Relacionados', {
             'fields': ('related_links',),
@@ -86,5 +91,27 @@ class PromotionAdmin(admin.ModelAdmin):
         ('Fechas', {
             'fields': ('created_at', 'updated_at'),
             'classes': ('collapse',)
+        }),
+    )
+
+
+@admin.register(NewsMedia)
+class NewsMediaAdmin(admin.ModelAdmin):
+    list_display = ["news", "media_type", "caption", "order", "is_active", "created_at"]
+    list_filter = ["media_type", "is_active", "created_at"]
+    search_fields = ["news__title", "caption"]
+    readonly_fields = ["created_at", "updated_at"]
+    ordering = ["news", "order", "created_at"]
+    
+    fieldsets = (
+        ("Archivo", {
+            "fields": ("news", "file", "media_type", "caption")
+        }),
+        ("Configuración", {
+            "fields": ("order", "is_active")
+        }),
+        ("Fechas", {
+            "fields": ("created_at", "updated_at"),
+            "classes": ("collapse",)
         }),
     )

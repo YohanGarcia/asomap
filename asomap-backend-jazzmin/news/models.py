@@ -195,6 +195,70 @@ class News(models.Model):
         return None
 
 
+class NewsMedia(models.Model):
+    """
+    Modelo para archivos de media asociados a noticias
+    """
+    MEDIA_TYPE_CHOICES = [
+        ('image', 'Imagen'),
+        ('video', 'Video'),
+        ('document', 'Documento'),
+    ]
+    
+    news = models.ForeignKey(
+        News,
+        on_delete=models.CASCADE,
+        related_name='media_files',
+        verbose_name="Noticia",
+        help_text="Noticia a la que pertenece este archivo"
+    )
+    file = models.FileField(
+        upload_to='news/',
+        verbose_name="Archivo",
+        help_text="Archivo de imagen, video o documento"
+    )
+    media_type = models.CharField(
+        max_length=20,
+        choices=MEDIA_TYPE_CHOICES,
+        default='image',
+        verbose_name="Tipo de media",
+        help_text="Tipo de archivo"
+    )
+    caption = models.CharField(
+        max_length=200,
+        blank=True,
+        verbose_name="Descripción",
+        help_text="Descripción o pie de foto del archivo"
+    )
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Orden",
+        help_text="Orden de visualización"
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name="Activo",
+        help_text="Indica si el archivo está activo"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Archivo de Media"
+        verbose_name_plural = "Archivos de Media"
+        ordering = ['order', 'created_at']
+
+    def __str__(self):
+        return f"{self.news.title} - {self.get_media_type_display()}"
+
+    @property
+    def file_url(self):
+        """
+        Retorna la URL del archivo para el frontend
+        """
+        if self.file:
+            return self.file.url
+        return None
 
 
 class Promotion(models.Model):

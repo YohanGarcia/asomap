@@ -3,10 +3,10 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
 from drf_spectacular.utils import extend_schema, extend_schema_view
-from .models import Account, Loan, Card, Certificate
+from .models import Account, Loan, LoanType, Card, Certificate, Banner
 from .serializers import (
-    AccountSerializer, LoanSerializer, 
-    CardSerializer, CertificateSerializer
+    AccountSerializer, LoanSerializer, LoanTypeSerializer,
+    CardSerializer, CertificateSerializer, BannerSerializer
 )
 
 class ProductsPagination(PageNumberPagination):
@@ -434,3 +434,70 @@ class ProductsViewSet(viewsets.ModelViewSet):
                 {'error': 'Certificate not found'}, 
                 status=status.HTTP_404_NOT_FOUND
             )
+
+@extend_schema_view(
+    list=extend_schema(
+        summary="Listar banners",
+        description="Retorna una lista de banners activos ordenados por prioridad",
+        tags=["Banners"]
+    ),
+    retrieve=extend_schema(
+        summary="Obtener banner",
+        description="Retorna los detalles de un banner específico",
+        tags=["Banners"]
+    )
+)
+class BannerViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ViewSet para manejar banners promocionales
+    """
+    queryset = Banner.objects.filter(is_active=True).order_by("order", "title")
+    serializer_class = BannerSerializer
+    pagination_class = None  # Los banners no necesitan paginación
+    
+    @extend_schema(
+        summary="Obtener banner principal",
+        description="Retorna el banner principal (el de mayor prioridad)",
+        tags=["Banners"]
+    )
+    @action(detail=False, methods=["get"])
+    def main(self, request):
+        """
+        Retorna el banner principal (el de mayor prioridad)
+        """
+        try:
+            banner = self.queryset.first()
+            if banner:
+                serializer = BannerSerializer(banner)
+                return Response(serializer.data)
+            else:
+                return Response(
+                    {"error": "No active banners found"}, 
+                    status=status.HTTP_404_NOT_FOUND
+                )
+        except Exception as e:
+            return Response(
+                {"error": "Error retrieving main banner"}, 
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+@extend_schema_view(
+    list=extend_schema(
+        summary="Listar tipos de préstamos",
+        description="Retorna una lista de tipos de préstamos activos ordenados por prioridad",
+        tags=["Tipos de Préstamos"]
+    ),
+    retrieve=extend_schema(
+        summary="Obtener tipo de préstamo",
+        description="Retorna los detalles de un tipo de préstamo específico",
+        tags=["Tipos de Préstamos"]
+    )
+)
+class LoanTypeViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ViewSet para manejar tipos de préstamos
+    """
+    queryset = LoanType.objects.filter(is_active=True).order_by("order", "name")
+    serializer_class = LoanTypeSerializer
+    pagination_class = None  # Los tipos de préstamos no necesitan paginación

@@ -33,7 +33,7 @@ export default defineConfig(({ mode }) => {
           rewrite: (path) => path.replace(/^\/api/, '/api')
         },
         '/media': {
-          target: nginxUrl,
+          target: backendUrl,
           changeOrigin: true
         }
       }

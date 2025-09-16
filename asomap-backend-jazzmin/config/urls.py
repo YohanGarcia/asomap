@@ -30,8 +30,13 @@ urlpatterns = [
     # Healthcheck endpoints - MÁXIMA PRIORIDAD
     path('health/', health_check, name='health_check'),
     path('healthcheck/', health_check, name='health_check_alt'),
-    
-               # API URLs
+]
+
+# Servir archivos de media PRIMERO (antes de las APIs)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# API URLs
+urlpatterns += [
     path('api/', include('about.urls')),
     path('api/', include('news.urls')),
     path('api/', include('products.urls')),
@@ -51,9 +56,6 @@ urlpatterns = [
     # Admin por defecto de Django - RUTA PRINCIPAL (última prioridad)
     path('', admin.site.urls),
 ]
-
-# Servir archivos de media también en producción
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 # Servir archivos estáticos
 if settings.DEBUG:

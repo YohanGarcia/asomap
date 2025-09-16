@@ -12,4 +12,8 @@ export const footerService = {
         const response = await httpClient.get<FooterResponse>(ENDPOINTS.COLLECTIONS.LAYOUT.FOOTER);
         return response.data;
     }
-}; 
+};
+
+// Re-exportar los servicios de redes sociales y contactos para facilitar el uso
+export { socialNetworksService } from './social-networks';
+export { contactsService } from './contacts'; 

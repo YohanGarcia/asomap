@@ -197,56 +197,117 @@ class Account(models.Model):
         """
         return slugify(self.title)
 
+class LoanType(models.Model):
+    """
+    Modelo para gestionar los tipos de préstamos desde el admin
+    """
+    name = models.CharField(
+        max_length=100,
+        unique=True,
+        verbose_name="Nombre",
+        help_text="Nombre del tipo de préstamo"
+    )
+    slug = models.SlugField(
+        max_length=100,
+        unique=True,
+        verbose_name="Slug",
+        help_text="Identificador único para URLs (se genera automáticamente)"
+    )
+    description = models.TextField(
+        blank=True,
+        verbose_name="Descripción",
+        help_text="Descripción del tipo de préstamo"
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name="Activo",
+        help_text="Indica si este tipo de préstamo está disponible"
+    )
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Orden",
+        help_text="Orden de visualización (menor número = mayor prioridad)"
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Fecha de creación"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name="Fecha de actualización"
+    )
+
+    class Meta:
+        verbose_name = "Tipo de Préstamo"
+        verbose_name_plural = "Tipos de Préstamos"
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    @property
+    def slug_auto(self):
+        """
+        Retorna el slug del nombre para URLs amigables
+        """
+        return slugify(self.name)
+
+
 class Loan(models.Model):
-    LOAN_TYPE_CHOICES = [
-        ('home_purchase', 'Compra de vivienda'),
-        ('remodelation', 'Ampliación o remodelación'),
-        ('construction', 'Contrucción'),
-        ('land_purchase', 'Compra de terreno'),
-        ('consumer', 'Préstamo de Consumo'),
-    ]
     
     title = models.CharField(
         max_length=200,
         verbose_name="Título",
-        help_text="Título del préstamo hipotecario"
+        help_text="Título del préstamo "
     )
     description = models.TextField(
         verbose_name="Descripción",
         help_text="Descripción detallada del préstamo"
     )
-    loan_type = models.CharField(
-        max_length=20, 
-        choices=LOAN_TYPE_CHOICES,
-        default='home_purchase',
-        verbose_name="Tipo de préstamo"
+    loan_type = models.ForeignKey(
+        LoanType,
+        on_delete=models.PROTECT,
+        verbose_name="Tipo de préstamo",
+        help_text="Selecciona el tipo de préstamo"
     )
     details = models.TextField(
         verbose_name="Detalles",
-        help_text="Detalles del préstamo separados por comas",
+        help_text="Detalles del préstamo separados por /",
         default=""
     )
     requirements_title = models.CharField(
         max_length=200,
-        default="Requisitos para Crédito Hipotecario",
+        default="Requisitos para Crédito",
         verbose_name="Título de requisitos",
         help_text="Título de la sección de requisitos"
     )
     requirements = models.TextField(
         verbose_name="Requisitos",
-        help_text="Requisitos del préstamo separados por comas"
+        help_text="Requisitos del préstamo separados por /"
+    )
+    banner_image = models.ImageField(
+        upload_to='products/loans/',
+        verbose_name="Imagen del banner",
+        help_text="Imagen principal del préstamo para el banner",
+        null=True,
+        blank=True
     )
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        verbose_name = "Préstamo Hipotecario"
-        verbose_name_plural = "Préstamos Hipotecarios"
+        verbose_name = "Préstamo"
+        verbose_name_plural = "Préstamos"
         ordering = ['loan_type', 'title']
 
     def __str__(self):
-        return f"{self.title} - {self.get_loan_type_display()}"
+        return f"{self.title} - {self.loan_type.name if self.loan_type else 'Sin tipo'}"
 
     @property
     def details_list(self):
@@ -254,7 +315,7 @@ class Loan(models.Model):
         Retorna los detalles como lista para el frontend
         """
         if self.details:
-            return [detail.strip() for detail in self.details.split(',') if detail.strip()]
+            return [detail.strip() for detail in self.details.split('/') if detail.strip()]
         return []
 
     @property
@@ -263,8 +324,16 @@ class Loan(models.Model):
         Retorna los requisitos como lista para el frontend
         """
         if self.requirements:
-            return [req.strip() for req in self.requirements.split(',') if req.strip()]
+            return [req.strip() for req in self.requirements.split('/') if req.strip()]
         return []
+
+    @property
+    def slug(self):
+        """
+        Retorna el slug del título para URLs
+        """
+        from django.utils.text import slugify
+        return slugify(self.title)
 
 class CardBenefit(models.Model):
     """Modelo para los beneficios de las tarjetas con iconos"""
@@ -800,6 +869,87 @@ class Certificate(models.Model):
                 'answer': faq.answer
             })
         return faqs
+
+    @property
+    def slug(self):
+        """
+        Retorna el slug del título para URLs amigables
+        """
+        return slugify(self.title)
+
+
+class Banner(models.Model):
+    """Modelo para banners promocionales con botones de acción"""
+    
+    # Información básica
+    title = models.CharField(
+        max_length=200,
+        verbose_name="Título",
+        help_text="Título principal del banner"
+    )
+    description = models.TextField(
+        verbose_name="Descripción",
+        help_text="Descripción del banner"
+    )
+    
+    # Botón 1
+    button1_name = models.CharField(
+        max_length=100,
+        verbose_name="Nombre del Botón 1",
+        help_text="Texto que aparecerá en el primer botón"
+    )
+    button1_url = models.URLField(
+        verbose_name="URL del Botón 1",
+        help_text="Enlace al que dirigirá el primer botón"
+    )
+    
+    # Botón 2
+    button2_name = models.CharField(
+        max_length=100,
+        verbose_name="Nombre del Botón 2",
+        help_text="Texto que aparecerá en el segundo botón"
+    )
+    button2_url = models.URLField(
+        verbose_name="URL del Botón 2",
+        help_text="Enlace al que dirigirá el segundo botón"
+    )
+    
+    # Estado y orden
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name="Activo",
+        help_text="Indica si el banner está activo"
+    )
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Orden",
+        help_text="Orden de visualización (menor número = mayor prioridad)"
+    )
+    
+    # Timestamps
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="Fecha de creación"
+    )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name="Fecha de actualización"
+    )
+
+    class Meta:
+        verbose_name = "Banner"
+        verbose_name_plural = "Banner"
+        ordering = ['order', 'title']
+        constraints = [
+            models.UniqueConstraint(
+                fields=['is_active'],
+                condition=models.Q(is_active=True),
+                name='unique_active_banner'
+            )
+        ]
+
+    def __str__(self):
+        return f"{self.title} - Orden: {self.order}"
 
     @property
     def slug(self):

@@ -22,7 +22,8 @@ export const ENDPOINTS = {
             ACCOUNTS: '/products/accounts/',
             LOANS: '/products/loans/',
             CARDS: '/products/cards/',
-            CERTIFICATES: '/products/certificates/'
+            CERTIFICATES: '/products/certificates/',
+            BANNERS: '/banners/'
         },
 
         HOME: {
@@ -36,6 +37,8 @@ export const ENDPOINTS = {
             HEADER: '/header/navigation/',
             EXCHANGE_RATE: '/header/exchange/',
             FOOTER: '/layout/footer/',
+            SOCIAL_NETWORKS: '/social-networks/',
+            CONTACTS: '/contacts/',
             MENU: '/layout/menu/'
         },
         LOCATIONS: {
@@ -54,9 +57,12 @@ export const ENDPOINTS = {
         USER_SUPPORT: {
             RIGHTS_AND_DUTIES: '/user-support/rights-and-duties/',
             SUGGESTION_BOX: '/user-support/suggestion-box/',
+            SUGGESTION_BOX_PAGE: '/user-support/suggestion-box-page/',
             PROVINCES: '/user-support/provinces/',
             FRAUD_REPORT: '/user-support/fraud-reports/',
+            FRAUD_REPORT_PAGE: '/user-support/fraud-report-page/',
             CLAIM_REQUEST: '/user-support/claim-requests/',
+            CLAIM_REQUEST_PAGE: '/user-support/claim-request-page/',
             SERVICE_RATES: '/user-support/service-rates/',
             SERVICE_CATEGORIES: '/user-support/service-categories/',
             ABANDONED_ACCOUNTS: '/user-support/abandoned-accounts/',

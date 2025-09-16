@@ -48,17 +48,15 @@ export const savingTipsService = {
       const response = await httpClient.get<ISliderSlidesAPIResponse>(ENDPOINTS.COLLECTIONS.FINANCIAL_GUIDANCE.SLIDER_SLIDES);
       
       // Filtrar solo slides activos y transformar datos
-                    const slides: ISliderSlideData[] = response.data.results
-                .filter(slide => slide.is_active)
-                .sort((a, b) => a.order - b.order)
-                .map(slide => ({
-                  id: slide.id,
-                  image: slide.image_url.startsWith('http') 
-                    ? slide.image_url 
-                    : `http://localhost:8080${slide.image_url}`,
-                  title: slide.title,
-                  description: slide.description
-                }));
+      const slides: ISliderSlideData[] = response.data.results
+        .filter(slide => slide.is_active)
+        .sort((a, b) => a.order - b.order)
+        .map(slide => ({
+          id: slide.id,
+          image: slide.image_url || null, // Validación simple: null si no hay imagen
+          title: slide.title,
+          description: slide.description
+        }));
 
       debugLog('[SavingTipsService] Slider slides fetched successfully:', slides);
       return slides;

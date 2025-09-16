@@ -1,5 +1,83 @@
 from django.db import models
 
+class SocialNetwork(models.Model):
+    """
+    Modelo para gestionar las redes sociales de la empresa
+    """
+    name = models.CharField(
+        max_length=100,
+        verbose_name="Nombre de la red social",
+        help_text="Nombre de la red social (ej: Facebook, Instagram, Twitter)"
+    )
+    url = models.URLField(
+        verbose_name="URL de la red social",
+        help_text="Enlace completo a la página de la red social"
+    )
+    icon = models.CharField(
+        max_length=50,
+        verbose_name="Icono",
+        help_text="Nombre del icono de React Icons (ej: FaFacebook, FaInstagram, FaTwitter)"
+    )
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Orden",
+        help_text="Orden de visualización (menor número = aparece primero)"
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name="Activo",
+        help_text="Indica si la red social está activa y se muestra"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Red Social"
+        verbose_name_plural = "Redes Sociales"
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return f"{self.name} - {self.url}"
+
+class Contact(models.Model):
+    """
+    Modelo para gestionar la información de contacto de la empresa
+    """
+    name = models.CharField(
+        max_length=100,
+        verbose_name="Nombre del contacto",
+        help_text="Nombre del tipo de contacto (ej: Teléfono, Email, WhatsApp, Dirección)"
+    )
+    url = models.URLField(
+        verbose_name="URL del contacto",
+        help_text="Enlace o valor del contacto (ej: tel:+1234567890, mailto:info@empresa.com, https://wa.me/1234567890)"
+    )
+    icon = models.CharField(
+        max_length=50,
+        verbose_name="Icono",
+        help_text="Nombre del icono de React Icons (ej: FaPhone, FaEnvelope, FaWhatsapp, FaMapMarkerAlt)"
+    )
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Orden",
+        help_text="Orden de visualización (menor número = aparece primero)"
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name="Activo",
+        help_text="Indica si el contacto está activo y se muestra"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Contacto"
+        verbose_name_plural = "Contactos"
+        ordering = ['order', 'name']
+
+    def __str__(self):
+        return f"{self.name} - {self.url}"
+
 class Footer(models.Model):
     # Secciones del footer
     sections = models.TextField(

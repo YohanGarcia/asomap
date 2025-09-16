@@ -108,6 +108,12 @@ else:
         python manage.py create_sample_certificates --force 2>/dev/null || echo "⚠️  Error en create_sample_certificates"
         python manage.py create_sample_loans --force 2>/dev/null || echo "⚠️  Error en create_sample_loans"
         
+        echo "🎨 Creando banner de ejemplo..."
+        python manage.py create_banner_data --force 2>/dev/null || echo "⚠️  Error en create_banner_data"
+        
+        echo "🏷️ Creando tipos de préstamos..."
+        python manage.py create_loan_types --force 2>/dev/null || echo "⚠️  Error en create_loan_types"
+        
         echo "👤 Creando datos de Pro Usuario..."
         python manage.py create_provinces --force 2>/dev/null || echo "⚠️  Error en create_provinces"
         python manage.py create_sample_service_rates --force 2>/dev/null || echo "⚠️  Error en create_sample_service_rates"

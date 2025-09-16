@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from products.models import Account, Loan, Card, Certificate
+from products.models import Account, Loan, LoanType, Card, Certificate
 import logging
 
 logger = logging.getLogger(__name__)
@@ -75,7 +75,7 @@ class Command(BaseCommand):
                 {
                     'title': 'Préstamo de Consumo',
                     'description': 'Préstamo personal para necesidades inmediatas.',
-                    'loan_type': 'personal',
+                    'loan_type_slug': 'prestamo-de-consumo',
                     'requirements': [
                         'Ser asociado activo por mínimo 6 meses',
                         'Ingresos comprobables',
@@ -85,7 +85,7 @@ class Command(BaseCommand):
                 {
                     'title': 'Préstamo Hipotecario',
                     'description': 'Financiamiento para vivienda con las mejores condiciones.',
-                    'loan_type': 'mortgage',
+                    'loan_type_slug': 'compra-de-vivienda',
                     'requirements': [
                         'Ser asociado activo por mínimo 1 año',
                         'Ingresos estables y comprobables',
@@ -95,7 +95,7 @@ class Command(BaseCommand):
                 {
                     'title': 'Préstamo Comercial',
                     'description': 'Financiamiento para empresas y comercios.',
-                    'loan_type': 'business',
+                    'loan_type_slug': 'prestamo-de-consumo',  # Usar consumo como base
                     'requirements': [
                         'Empresa registrada y operativa',
                         'Estados financieros actualizados',
@@ -105,17 +105,21 @@ class Command(BaseCommand):
             ]
 
             for loan_data in loans_data:
-                loan, created = Loan.objects.get_or_create(
-                    title=loan_data['title'],
-                    defaults={
-                        'description': loan_data['description'],
-                        'loan_type': loan_data['loan_type'],
-                        'requirements': loan_data['requirements'],
-                        'is_active': True
-                    }
-                )
-                if created:
-                    self.stdout.write(f'✓ Préstamo "{loan_data["title"]}" creado')
+                try:
+                    loan_type = LoanType.objects.get(slug=loan_data['loan_type_slug'])
+                    loan, created = Loan.objects.get_or_create(
+                        title=loan_data['title'],
+                        defaults={
+                            'description': loan_data['description'],
+                            'loan_type': loan_type,
+                            'requirements': ' / '.join(loan_data['requirements']),
+                            'is_active': True
+                        }
+                    )
+                    if created:
+                        self.stdout.write(f'✓ Préstamo "{loan_data["title"]}" creado')
+                except LoanType.DoesNotExist:
+                    self.stdout.write(f'⚠️  Tipo de préstamo "{loan_data["loan_type_slug"]}" no encontrado, saltando préstamo "{loan_data["title"]}"')
 
             # 3. Tarjetas
             cards_data = [

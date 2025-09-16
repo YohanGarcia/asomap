@@ -5,7 +5,7 @@ from rest_framework.pagination import PageNumberPagination
 from django.shortcuts import get_object_or_404
 from .models import (
     AbandonedAccountsSection, AccountType, YearlyDocument,
-    ContractCategory, AccountContractsSection, Contract, ClaimRequest, FraudReport, RightsAndDutiesPage, ServiceRatesPage, ServiceCategory, SuggestionBox, Province
+    ContractCategory, AccountContractsSection, Contract, ClaimRequest, FraudReport, RightsAndDutiesPage, ServiceRatesPage, ServiceCategory, SuggestionBox, Province, SuggestionBoxPage, FraudReportPage, ClaimRequestPage
 )
 from .serializers import (
     AbandonedAccountsSectionSerializer,
@@ -20,7 +20,10 @@ from .serializers import (
     ServiceRatesPageSerializer,
     ServiceCategorySerializer,
     SuggestionBoxSerializer,
-    ProvinceSerializer
+    ProvinceSerializer,
+    SuggestionBoxPageSerializer,
+    FraudReportPageSerializer,
+    ClaimRequestPageSerializer
 )
 from .utils import send_claim_confirmation_email, send_fraud_confirmation_email, send_suggestion_confirmation_email
 
@@ -319,20 +322,12 @@ class RightsAndDutiesPageViewSet(viewsets.ReadOnlyModelViewSet):
     ViewSet para manejar la página de derechos y deberes
     Solo permite lectura (GET)
     """
-    queryset = RightsAndDutiesPage.objects.filter(is_active=True).prefetch_related(
-        'sections__images'
-    )
+    queryset = RightsAndDutiesPage.objects.filter(is_active=True)
     serializer_class = RightsAndDutiesPageSerializer
     
     def get_queryset(self):
-        """Retorna solo la página activa con sus secciones e imágenes"""
-        return super().get_queryset().prefetch_related(
-            'sections__images'
-        ).filter(
-            is_active=True,
-            sections__is_active=True,
-            sections__images__is_active=True
-        ).distinct()
+        """Retorna solo la página activa"""
+        return RightsAndDutiesPage.objects.filter(is_active=True)
 
 
 class ServiceRatesPageViewSet(viewsets.ReadOnlyModelViewSet):
@@ -426,3 +421,42 @@ class SuggestionBoxViewSet(viewsets.ModelViewSet):
             {"error": "No se permiten eliminaciones desde el frontend"},
             status=status.HTTP_405_METHOD_NOT_ALLOWED
         )
+
+
+class SuggestionBoxPageViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ViewSet para manejar la página del buzón de sugerencias
+    Solo permite lectura (GET)
+    """
+    queryset = SuggestionBoxPage.objects.filter(is_active=True)
+    serializer_class = SuggestionBoxPageSerializer
+    
+    def get_queryset(self):
+        """Retorna solo la página activa"""
+        return SuggestionBoxPage.objects.filter(is_active=True)
+
+
+class FraudReportPageViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ViewSet para manejar la página de reportes de fraude
+    Solo permite lectura (GET)
+    """
+    queryset = FraudReportPage.objects.filter(is_active=True)
+    serializer_class = FraudReportPageSerializer
+    
+    def get_queryset(self):
+        """Retorna solo la página activa"""
+        return FraudReportPage.objects.filter(is_active=True)
+
+
+class ClaimRequestPageViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    ViewSet para manejar la página de solicitudes de reclamaciones
+    Solo permite lectura (GET)
+    """
+    queryset = ClaimRequestPage.objects.filter(is_active=True)
+    serializer_class = ClaimRequestPageSerializer
+    
+    def get_queryset(self):
+        """Retorna solo la página activa"""
+        return ClaimRequestPage.objects.filter(is_active=True)

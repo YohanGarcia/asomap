@@ -15,6 +15,9 @@ export interface CommunitySupportResponse {
             impact: string;
             imageUrl: string;
             category: string;
+            year: string;
+            location: string;
+            beneficiaries: string;
         }>;
     };
 } 

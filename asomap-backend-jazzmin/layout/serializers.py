@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Footer
+from .models import Footer, SocialNetwork, Contact
 
 class FooterSerializer(serializers.ModelSerializer):
     sections = serializers.SerializerMethodField()
@@ -21,3 +21,19 @@ class FooterSerializer(serializers.ModelSerializer):
     def get_location(self, obj):
         """Retorna la información de ubicación como diccionario"""
         return obj.location_dict
+
+class SocialNetworkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SocialNetwork
+        fields = [
+            'id', 'name', 'url', 'icon', 'order', 'is_active', 
+            'created_at', 'updated_at'
+        ]
+
+class ContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Contact
+        fields = [
+            'id', 'name', 'url', 'icon', 'order', 'is_active', 
+            'created_at', 'updated_at'
+        ]

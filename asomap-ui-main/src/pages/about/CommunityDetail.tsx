@@ -162,7 +162,7 @@ const CommunityDetail: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Fecha</p>
-                  <p className="font-medium text-sm sm:text-base">2025</p>
+                  <p className="font-medium text-sm sm:text-base">{initiative.year || 'N/A'}</p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -171,7 +171,7 @@ const CommunityDetail: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Ubicación</p>
-                  <p className="font-medium text-sm sm:text-base">Santo Domingo</p>
+                  <p className="font-medium text-sm sm:text-base">{initiative.location || 'N/A'}</p>
                 </div>
               </div>
               <div className="flex items-center gap-4">
@@ -180,7 +180,7 @@ const CommunityDetail: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-sm text-gray-500">Beneficiarios</p>
-                  <p className="font-medium text-sm sm:text-base">Comunidad Local</p>
+                  <p className="font-medium text-sm sm:text-base">{initiative.beneficiaries || 'N/A'}</p>
                 </div>
               </div>
             </div>

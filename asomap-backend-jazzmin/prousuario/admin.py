@@ -3,7 +3,7 @@ from .models import (
     AccountType, AbandonedAccountsSection, YearlyDocument,
     ContractCategory, AccountContractsSection, Contract, ClaimRequest, FraudReport,
     RightsAndDutiesPage, RightsAndDutiesSection, RightsAndDutiesImage,
-    ServiceRatesPage, ServiceCategory, ServiceRate, Province, SuggestionBox
+    ServiceRatesPage, ServiceCategory, ServiceRate, Province, SuggestionBox, SuggestionBoxPage, FraudReportPage, ClaimRequestPage
 )
 
 # Configurar el orden de los modelos en el admin
@@ -727,6 +727,132 @@ class SuggestionBoxAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         """No permitir eliminar sugerencias"""
         return False
+
+
+@admin.register(SuggestionBoxPage)
+class SuggestionBoxPageAdmin(admin.ModelAdmin):
+    """Admin para página del buzón de sugerencias"""
+    
+    list_display = [
+        'title', 'is_active', 'created_at'
+    ]
+    
+    list_filter = [
+        'is_active', 'created_at'
+    ]
+    
+    search_fields = [
+        'title', 'description'
+    ]
+    
+    readonly_fields = [
+        'created_at', 'updated_at'
+    ]
+    
+    fieldsets = (
+        ('Información de la Página', {
+            'fields': ('title', 'description')
+        }),
+        ('Estado', {
+            'fields': ('is_active',)
+        }),
+        ('Información del Sistema', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    ordering = ['-created_at']
+    
+    def has_add_permission(self, request):
+        """Solo permitir crear si no hay páginas activas"""
+        if SuggestionBoxPage.objects.filter(is_active=True).exists():
+            return False
+        return super().has_add_permission(request)
+
+
+@admin.register(FraudReportPage)
+class FraudReportPageAdmin(admin.ModelAdmin):
+    """Admin para página de reportes de fraude"""
+    
+    list_display = [
+        'title', 'is_active', 'created_at'
+    ]
+    
+    list_filter = [
+        'is_active', 'created_at'
+    ]
+    
+    search_fields = [
+        'title', 'description'
+    ]
+    
+    readonly_fields = [
+        'created_at', 'updated_at'
+    ]
+    
+    fieldsets = (
+        ('Información de la Página', {
+            'fields': ('title', 'description')
+        }),
+        ('Estado', {
+            'fields': ('is_active',)
+        }),
+        ('Información del Sistema', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    ordering = ['-created_at']
+    
+    def has_add_permission(self, request):
+        """Solo permitir crear si no hay páginas activas"""
+        if FraudReportPage.objects.filter(is_active=True).exists():
+            return False
+        return super().has_add_permission(request)
+
+
+@admin.register(ClaimRequestPage)
+class ClaimRequestPageAdmin(admin.ModelAdmin):
+    """Admin para página de solicitudes de reclamaciones"""
+    
+    list_display = [
+        'title', 'is_active', 'created_at'
+    ]
+    
+    list_filter = [
+        'is_active', 'created_at'
+    ]
+    
+    search_fields = [
+        'title', 'description'
+    ]
+    
+    readonly_fields = [
+        'created_at', 'updated_at'
+    ]
+    
+    fieldsets = (
+        ('Información de la Página', {
+            'fields': ('title', 'description')
+        }),
+        ('Estado', {
+            'fields': ('is_active',)
+        }),
+        ('Información del Sistema', {
+            'fields': ('created_at', 'updated_at'),
+            'classes': ('collapse',)
+        }),
+    )
+    
+    ordering = ['-created_at']
+    
+    def has_add_permission(self, request):
+        """Solo permitir crear si no hay páginas activas"""
+        if ClaimRequestPage.objects.filter(is_active=True).exists():
+            return False
+        return super().has_add_permission(request)
 
 
 # La configuración del orden del admin se maneja en admin_config.py

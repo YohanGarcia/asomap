@@ -3,7 +3,7 @@ from .models import (
     AccountType, AbandonedAccountsSection, YearlyDocument,
     ContractCategory, AccountContractsSection, Contract, ClaimRequest, FraudReport,
     RightsAndDutiesImage, RightsAndDutiesSection, RightsAndDutiesPage,
-    ServiceRate, ServiceCategory, ServiceRatesPage, SuggestionBox, Province
+    ServiceRate, ServiceCategory, ServiceRatesPage, SuggestionBox, Province, SuggestionBoxPage, FraudReportPage, ClaimRequestPage
 )
 
 
@@ -346,3 +346,36 @@ class ProvinceSerializer(serializers.ModelSerializer):
     class Meta:
         model = Province
         fields = ['id', 'name']
+
+
+class SuggestionBoxPageSerializer(serializers.ModelSerializer):
+    """Serializer para la página del buzón de sugerencias"""
+    
+    class Meta:
+        model = SuggestionBoxPage
+        fields = [
+            'id', 'title', 'description',
+            'is_active', 'created_at', 'updated_at'
+        ]
+
+
+class FraudReportPageSerializer(serializers.ModelSerializer):
+    """Serializer para la página de reportes de fraude"""
+    
+    class Meta:
+        model = FraudReportPage
+        fields = [
+            'id', 'title', 'description',
+            'is_active', 'created_at', 'updated_at'
+        ]
+
+
+class ClaimRequestPageSerializer(serializers.ModelSerializer):
+    """Serializer para la página de solicitudes de reclamaciones"""
+    
+    class Meta:
+        model = ClaimRequestPage
+        fields = [
+            'id', 'title', 'description',
+            'is_active', 'created_at', 'updated_at'
+        ]

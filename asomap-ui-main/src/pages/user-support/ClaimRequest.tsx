@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { claimRequestData } from '@/mocks';
-import { claimRequestService } from '@/api';
-import type { ISubmitClaimRequest } from '@/interfaces';
+import { claimRequestService, claimRequestPageService } from '@/api';
+import type { ISubmitClaimRequest, IClaimRequestPageData } from '@/interfaces';
 
 interface FormData {
     fullName: string;
@@ -30,6 +30,34 @@ const ClaimRequest: React.FC = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string>('');
     const [error, setError] = useState<string | null>(null);
+    const [pageData, setPageData] = useState<IClaimRequestPageData | null>(null);
+    const [isLoadingPage, setIsLoadingPage] = useState(true);
+
+    // Cargar datos de la página al montar el componente
+    useEffect(() => {
+        const loadPageData = async () => {
+            try {
+                setIsLoadingPage(true);
+                const data = await claimRequestPageService.getClaimRequestPage();
+                setPageData(data);
+            } catch (error) {
+                console.error('Error loading claim request page data:', error);
+                // En caso de error, usar datos mock como fallback
+                setPageData({
+                    id: 0,
+                    title: claimRequestData.title,
+                    description: claimRequestData.description,
+                    isActive: true,
+                    createdAt: '',
+                    updatedAt: ''
+                });
+            } finally {
+                setIsLoadingPage(false);
+            }
+        };
+
+        loadPageData();
+    }, []);
 
     const validateDocument = (value: string) => {
         const valueWithoutHyphens = value.replace(/\D/g, '');
@@ -145,12 +173,23 @@ const ClaimRequest: React.FC = () => {
                             animate={{ opacity: 1, x: 0 }}
                             className="pr-4 md:pr-12"
                         >
-                            <h1 className="text-[#2B4BA9] text-2xl font-bold mb-4">
-                                {claimRequestData.title}
-                            </h1>
-                            <p className="text-gray-600 text-sm leading-relaxed">
-                                {claimRequestData.description}
-                            </p>
+                            {isLoadingPage ? (
+                                <div className="animate-pulse">
+                                    <div className="h-8 bg-gray-200 rounded mb-4"></div>
+                                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                                    <div className="h-4 bg-gray-200 rounded mb-2"></div>
+                                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                                </div>
+                            ) : (
+                                <>
+                                    <h1 className="text-[#2B4BA9] text-2xl font-bold mb-4">
+                                        {pageData?.title || claimRequestData.title}
+                                    </h1>
+                                    <p className="text-gray-600 text-sm leading-relaxed">
+                                        {pageData?.description || claimRequestData.description}
+                                    </p>
+                                </>
+                            )}
                         </motion.div>
 
                         {/* Columna derecha - Formulario */}

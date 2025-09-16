@@ -80,9 +80,9 @@ class Command(BaseCommand):
                 defaults={
                     'description': loan_item['description'],
                     'loan_type': loan_item['loan_type'],
-                    'details': ', '.join(loan_item['details']),
+                    'details': ' / '.join(loan_item['details']),
                     'requirements_title': requirements_title,
-                    'requirements': ', '.join(requirements),
+                    'requirements': ' / '.join(requirements),
                     'is_active': True
                 }
             )

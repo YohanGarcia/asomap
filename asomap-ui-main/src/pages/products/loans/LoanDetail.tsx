@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useParams, useNavigate } from 'react-router-dom';
 import { loansService } from '@/api';
 import type { ILoanData } from '@/interfaces';
+import BannerComponent from './BannerComponet';
 
 const LoanDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -10,6 +11,8 @@ const LoanDetail: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+
+  console.log(loanData, 'loanData');
 
   useEffect(() => {
     const fetchLoanData = async () => {
@@ -83,44 +86,13 @@ const LoanDetail: React.FC = () => {
     );
   }
 
-  const { title, description, details, requirementsTitle, requirements, loanType, bannerImage } = loanData;
+  const { title, description, details, requirementsTitle, requirements, bannerImage } = loanData;
 
   // Función para obtener el color según el tipo de préstamo
-  const getLoanTypeColor = (type: string) => {
-    switch (type) {
-      case 'consumer':
-        return 'bg-blue-100 text-blue-800';
-      case 'commercial':
-        return 'bg-green-100 text-green-800';
-      case 'home_purchase':
-      case 'construction':
-      case 'remodelation':
-      case 'land_purchase':
-        return 'bg-purple-100 text-purple-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
+
 
   // Función para obtener el nombre legible del tipo de préstamo
-  const getLoanTypeName = (type: string) => {
-    switch (type) {
-      case 'consumer':
-        return 'Consumo';
-      case 'commercial':
-        return 'Comercial';
-      case 'home_purchase':
-        return 'Compra de Vivienda';
-      case 'construction':
-        return 'Construcción';
-      case 'remodelation':
-        return 'Ampliación/Remodelación';
-      case 'land_purchase':
-        return 'Compra de Terreno';
-      default:
-        return type;
-    }
-  };
+  
 
   return (
     <motion.div
@@ -129,35 +101,47 @@ const LoanDetail: React.FC = () => {
       variants={sectionVariants}
       className="relative -mt-[80px]"
     >
-      <div className="font-sans bg-gradient-to-b from-white to-blue-50/30">
+      <div className="font-sans bg-white">
         {/* Hero Section */}
-        <div className="relative h-[360px] sm:h-[400px] md:h-[450px] lg:h-[500px]">
-          <img
-            src={bannerImage}
-            alt={`${title} Banner`}
-            className="w-full h-full object-cover rounded-b-[20px] sm:rounded-b-[30px] lg:rounded-b-[50px]"
-          />
-          <div className="absolute inset-0 bg-black/40"></div>
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center text-white px-4">
-              <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium mb-4 ${getLoanTypeColor(loanType)}`}>
-                {getLoanTypeName(loanType)}
-              </span>
-              <h1 className="text-4xl sm:text-5xl font-bold mb-4">{title}</h1>
-              <p className="text-xl sm:text-2xl opacity-90 max-w-3xl mx-auto">{description}</p>
+        <div className="relative h-[360px] sm:h-[400px] md:h-[450px] lg:h-[500px] -mt-[80px]">
+          {bannerImage ? (
+            <img
+              src={bannerImage}
+              alt={`${title} Banner`}
+              className="w-full h-full object-cover rounded-b-[30px] sm:rounded-b-[50px] lg:rounded-b-[80px]"
+            />
+          ) : (
+            <div className="w-full h-full bg-gradient-to-r from-orange-500 to-blue-600 rounded-b-[30px] sm:rounded-b-[50px] lg:rounded-b-[80px] flex items-center justify-center">
+              <div className="text-white text-center">
+                <h1 className="text-4xl font-bold mb-4">{title}</h1>
+                <p className="text-xl opacity-90">Imagen no disponible</p>
+              </div>
+            </div>
+          )}
+          <div className=" absolute inset-0 bg-gradient-to-r from-orange-600/50  to-blue-600/60 rounded-b-[30px] sm:rounded-b-[50px] lg:rounded-b-[80px]">
+              <div className="absolute bottom-6 right-6 w-[500px] h-[80px]">
+                <div className="bg-blue-900/60 px-6 py-4 w-full h-full flex items-center justify-center">
+                  <h1 className="text-2xl sm:text-3xl font-bold text-white">{title}</h1>
+                </div>
             </div>
           </div>
         </div>
-
+        <div className="container mx-auto px-4 py-8">
         {/* Details Section */}
-        <div className="bg-white py-16 sm:py-24">
+        <div className="bg-white ">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-primary sm:text-4xl mb-4">Características del Préstamo</h2>
-              <p className="text-lg text-gray-600">Conoce todos los beneficios y detalles de este producto financiero</p>
+              <h2 className="text-3xl font-bold text-primary sm:text-4xl mb-4">{title}</h2>
+              <p className="text-lg text-gray-600">{description}</p>
             </div>
 
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+
+            <h2 className="text-2xl font-bold text-center text-primary mt-8">
+            Beneficios
+          </h2>
+
+
+            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 my-16">
               {details.map((detail, index) => (
                 <div key={index} className="bg-gray-50 rounded-lg p-6 hover:shadow-lg transition-shadow">
                   <div className="flex items-start">
@@ -173,20 +157,31 @@ const LoanDetail: React.FC = () => {
                 </div>
               ))}
             </div>
+                {/* Requirements Section */}
+        
           </div>
         </div>
 
-        {/* Requirements Section */}
-        <div className="bg-gray-50 py-16 sm:py-24">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-bold text-primary sm:text-4xl mb-4">{requirementsTitle}</h2>
-              <p className="text-lg text-gray-600">Asegúrate de cumplir con todos los requisitos necesarios</p>
+        <div className="bg-[#FFF5F0] rounded-lg p-8 flex items-center">
+          <div className="w-1/3">
+              {bannerImage ? (
+                <img
+                  src={bannerImage}
+                  alt="Familia feliz"
+                  className="rounded-full w-48 h-48 object-cover"
+                />
+              ) : (
+                <div className="rounded-full w-48 h-48 bg-gradient-to-r from-orange-500 to-blue-600 flex items-center justify-center">
+                  <span className="text-white text-2xl font-bold">📋</span>
+                </div>
+              )}
             </div>
-
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-white rounded-lg shadow-lg p-8">
-                <ul className="space-y-4">
+            <div className="w-2/3">
+              <h3 className="text-2xl font-bold text-primary mb-4">{requirementsTitle}</h3>
+              <h4 className="text-md font-semibold text-primary mb-2">
+                Asegúrate de cumplir con todos los requisitos necesarios
+              </h4>
+              <ul className="space-y-4">
                   {requirements.map((requirement, index) => (
                     <li key={index} className="flex items-start">
                       <div className="flex-shrink-0 w-6 h-6 bg-primary rounded-full flex items-center justify-center mr-4 mt-1">
@@ -198,33 +193,15 @@ const LoanDetail: React.FC = () => {
                     </li>
                   ))}
                 </ul>
-              </div>
             </div>
-          </div>
+
         </div>
 
-        {/* CTA Section */}
-        <div className="bg-primary py-16 sm:py-24">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-3xl font-bold text-white sm:text-4xl mb-4">
-              ¿Listo para solicitar tu préstamo?
-            </h2>
-            <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-              Nuestro equipo está listo para ayudarte a hacer realidad tus proyectos financieros
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-primary px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                Solicitar Préstamo
-              </button>
-              <button 
-                onClick={() => navigate('/productos')}
-                className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-primary transition-colors"
-              >
-                Ver Otros Productos
-              </button>
-            </div>
-          </div>
-        </div>
+        <BannerComponent />
+    
+
+       
+      </div>
       </div>
     </motion.div>
   );

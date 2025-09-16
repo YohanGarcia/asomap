@@ -1,6 +1,6 @@
 export interface SliderItem {
     id: number;
-    image: string;
+    image: string | null;
     imageTablet?: string;
     imageMobile?: string;
     alt?: string;

@@ -44,6 +44,9 @@ export * from './products/certidicate/financial-certificate.interface';
 // MapLocations
 export * from './locations/locations.interface';
 
+// Banner
+export * from './products/loans/banner.interface'
+
 
 
 // Accounts API
@@ -66,10 +69,13 @@ export * from './financial-guidance/saving-tips.interface';
 export * from './user-support/abandoned-accounts.interface';
 export * from './user-support/account-contracts.interface';
 export * from './user-support/claim-request.interface';
+export * from './user-support/claim-request-page.interface';
 export * from './user-support/fraud-report.interface';
+export * from './user-support/fraud-report-page.interface';
 export * from './user-support/rights-and-duties.interface';
 export * from './user-support/service-rates.interface';
 export * from './user-support/suggestion-box.interface';
+export * from './user-support/suggestion-box-page.interface';
 export * from './services/services-api.interface';
 
 // About
@@ -89,6 +95,12 @@ export * from './layout/menu.interface';
 
 // Footer
 export * from './layout/footer.interface';
+
+// Social Networks
+export * from './layout/social-network.interface';
+
+// Contacts
+export * from './layout/contact.interface';
 
 // Slider
 export * from './custom/slider.interface';

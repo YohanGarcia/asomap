@@ -54,8 +54,11 @@ services:
       start_period: 40s
 
   # Frontend React (para desarrollo)
+  
   frontend-dev:
-    build: ./asomap-ui-main
+    build: 
+      context: ./asomap-ui-main
+      dockerfile: Dockerfile.dev
     container_name: asomap_frontend_dev
     restart: unless-stopped
     ports:

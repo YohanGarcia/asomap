@@ -205,6 +205,96 @@ h1, h2, h3, h4, h5, h6 {
     border-color: var(--asomap-blue-dark) !important;
 }
 
+/* Asegurar que los títulos de las columnas siempre sean visibles */
+.table thead th,
+.table thead th a,
+.table thead th span,
+.table thead th *,
+th,
+th a,
+th span,
+th * {
+    color: var(--asomap-white) !important;
+    text-decoration: none !important;
+    font-weight: bold !important;
+}
+
+/* Reglas más específicas para Django Admin */
+.admin .table thead th,
+.admin .table thead th span,
+.admin th,
+.admin th span,
+.admin th {
+    color: var(--asomap-white) !important;
+    text-decoration: none !important;
+    font-weight: bold !important;
+}
+
+/* Hover en títulos de columnas */
+.table thead th:hover,
+.table thead th a:hover,
+.table thead th:hover a,
+th:hover,
+th a:hover,
+th:hover a {
+    color: var(--asomap-orange) !important;
+    background-color: var(--asomap-blue-dark) !important;
+}
+
+/* Enlaces en azul */
+a {
+    color: var(--asomap-blue) !important;
+    text-decoration: none !important;
+}
+
+a:hover {
+    color: var(--asomap-blue-dark) !important;
+    text-decoration: underline !important;
+}
+
+/* Enlaces en el admin */
+.admin a {
+    color: var(--asomap-blue) !important;
+}
+
+.admin a:hover {
+    color: var(--asomap-blue-dark) !important;
+    text-decoration: underline !important;
+}
+
+/* Enlaces en tablas */
+.table a,
+.admin .table a,
+tbody a,
+.admin tbody a {
+    color: var(--asomap-blue) !important;
+    text-decoration: none !important;
+}
+
+.table a:hover,
+.admin .table a:hover,
+tbody a:hover,
+.admin tbody a:hover {
+    color: var(--asomap-blue-dark) !important;
+    text-decoration: underline !important;
+}
+
+/* Enlaces en filas de tabla */
+tr a,
+.admin tr a,
+td a,
+.admin td a {
+    color: var(--asomap-blue) !important;
+}
+
+tr a:hover,
+.admin tr a:hover,
+td a:hover,
+.admin td a:hover {
+    color: var(--asomap-blue-dark) !important;
+    text-decoration: underline !important;
+}
+
 /* Paginación */
 .page-item.active .page-link {
     background-color: var(--asomap-blue) !important;

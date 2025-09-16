@@ -589,7 +589,7 @@ else:
     ]
 
 # Configuración de almacenamiento local con volúmenes Docker
-DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 # Configuración de directorios para archivos
 MEDIA_ROOT = config('MEDIA_ROOT', default='/app/media')

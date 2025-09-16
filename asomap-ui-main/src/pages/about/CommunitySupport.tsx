@@ -3,12 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { communityService } from '@/api';
 import type { CommunitySupportResponse } from '@/interfaces';
-import {
-  FaHandHoldingHeart,
-  FaPalette,
-  FaFutbol,
-  FaUsers
-} from 'react-icons/fa';
+import * as FaIcons from 'react-icons/fa';
 import { Pagination } from '@/components';
 
 const sectionVariants = {
@@ -122,12 +117,11 @@ const CommunitySupport: React.FC = () => {
     );
 
   const getIconComponent = (iconName: string) => {
-    const icons: { [key: string]: React.ReactElement } = {
-      FaHandHoldingHeart: <FaHandHoldingHeart className="text-xl text-[#2B4BA9]" />,
-      FaPalette: <FaPalette className="text-xl text-[#2B4BA9]" />,
-      FaFutbol: <FaFutbol className="text-xl text-[#2B4BA9]" />
-    };
-    return icons[iconName];
+    const IconComponent = (FaIcons as any)[iconName];
+    if (IconComponent) {
+      return <IconComponent className="text-xl text-[#2B4BA9]" />;
+    }
+    return <FaIcons.FaQuestion className="text-xl text-[#2B4BA9]" />;
   };
 
   // Calculate pagination
@@ -195,7 +189,7 @@ const CommunitySupport: React.FC = () => {
           >
             <div className="flex items-start gap-2 sm:gap-3">
               <div className="bg-[#2B4BA9]/5 w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-[#2B4BA9]/10 transition-colors">
-                <FaUsers className="text-xs sm:text-base text-[#2B4BA9]" />
+                <FaIcons.FaUsers className="text-xs sm:text-base text-[#2B4BA9]" />
               </div>
               <div className="flex-1 min-w-0">
                 <h3 className="text-[12px] sm:text-[15px] font-semibold text-[#2B4BA9] mb-0.5 sm:mb-1">Todas las Iniciativas</h3>

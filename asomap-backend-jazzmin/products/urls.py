@@ -1,10 +1,12 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import ProductsViewSet
+from .views import ProductsViewSet, BannerViewSet, LoanTypeViewSet
 
 # Router estándar (lowercase)
 router = DefaultRouter()
 router.register(r'products', ProductsViewSet, basename='products')
+router.register(r'banners', BannerViewSet, basename='banners')
+router.register(r'loan-types', LoanTypeViewSet, basename='loan-types')
 
 # Router adicional para endpoints EXACTOS (mayúsculas, sin slash final)
 class NoSlashRouter(DefaultRouter):

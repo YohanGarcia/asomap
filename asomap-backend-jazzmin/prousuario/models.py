@@ -891,3 +891,105 @@ class SuggestionBox(models.Model):
             from django.utils import timezone
             self.resolved_at = timezone.now()
         super().save(*args, **kwargs)
+
+
+class SuggestionBoxPage(models.Model):
+    """Modelo principal para la página del buzón de sugerencias"""
+    title = models.CharField(
+        max_length=200,
+        verbose_name="Título",
+        help_text="Título de la página del buzón de sugerencias"
+    )
+    description = models.TextField(
+        verbose_name="Descripción",
+        help_text="Descripción de la página del buzón de sugerencias"
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name="Activo",
+        help_text="Indica si la página está activa"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Página del Buzón de Sugerencias"
+        verbose_name_plural = "Páginas del Buzón de Sugerencias"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.title
+    
+    def save(self, *args, **kwargs):
+        # Asegurar que solo haya una página activa
+        if self.is_active:
+            SuggestionBoxPage.objects.exclude(pk=self.pk).update(is_active=False)
+        super().save(*args, **kwargs)
+
+
+class FraudReportPage(models.Model):
+    """Modelo principal para la página de reportes de fraude"""
+    title = models.CharField(
+        max_length=200,
+        verbose_name="Título",
+        help_text="Título de la página de reportes de fraude"
+    )
+    description = models.TextField(
+        verbose_name="Descripción",
+        help_text="Descripción de la página de reportes de fraude"
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name="Activo",
+        help_text="Indica si la página está activa"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Página de Reportes de Fraude"
+        verbose_name_plural = "Páginas de Reportes de Fraude"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.title
+    
+    def save(self, *args, **kwargs):
+        # Asegurar que solo haya una página activa
+        if self.is_active:
+            FraudReportPage.objects.exclude(pk=self.pk).update(is_active=False)
+        super().save(*args, **kwargs)
+
+
+class ClaimRequestPage(models.Model):
+    """Modelo principal para la página de solicitudes de reclamaciones"""
+    title = models.CharField(
+        max_length=200,
+        verbose_name="Título",
+        help_text="Título de la página de solicitudes de reclamaciones"
+    )
+    description = models.TextField(
+        verbose_name="Descripción",
+        help_text="Descripción de la página de solicitudes de reclamaciones"
+    )
+    is_active = models.BooleanField(
+        default=True,
+        verbose_name="Activo",
+        help_text="Indica si la página está activa"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Página de Solicitudes de Reclamaciones"
+        verbose_name_plural = "Páginas de Solicitudes de Reclamaciones"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return self.title
+    
+    def save(self, *args, **kwargs):
+        # Asegurar que solo haya una página activa
+        if self.is_active:
+            ClaimRequestPage.objects.exclude(pk=self.pk).update(is_active=False)
+        super().save(*args, **kwargs)

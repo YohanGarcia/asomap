@@ -43,13 +43,49 @@ export const getImageUrl = (relativePath: string) => {
         return relativePath;
     }
     
-    // Remove leading slash if present
+    // Use Vite environment variables for media URL
+    const mediaBaseUrl = import.meta.env.VITE_MEDIA_BASE_URL || import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
+    
+    // If the path already starts with /media, use it as is
+    if (relativePath.startsWith('/media')) {
+        const fullUrl = `${mediaBaseUrl}${relativePath}`;
+        debugLog(`getImageUrl: ${relativePath} -> ${fullUrl}`);
+        return fullUrl;
+    }
+    
+    // If the path starts with /, remove it and add /media prefix
     const cleanPath = relativePath.startsWith('/') ? relativePath.slice(1) : relativePath;
+    const fullUrl = `${mediaBaseUrl}/media/${cleanPath}`;
+    
+    debugLog(`getImageUrl: ${relativePath} -> ${fullUrl}`);
+    return fullUrl;
+};
+
+// Convert relative media URLs to absolute backend URLs (for videos and other media)
+export const getMediaUrl = (relativePath: string) => {
+    if (!relativePath) return '';
+    
+    // If it's already an absolute URL, return as is
+    if (relativePath.startsWith('http://') || relativePath.startsWith('https://')) {
+        return relativePath;
+    }
     
     // Use Vite environment variables for media URL
-    const mediaBaseUrl = import.meta.env.VITE_MEDIA_BASE_URL || API_CONFIG.BASE_URL.replace('/api', '');
+    const mediaBaseUrl = import.meta.env.VITE_MEDIA_BASE_URL || import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000';
     
-    return `${mediaBaseUrl}/${cleanPath}`;
+    // If the path already starts with /media, use it as is
+    if (relativePath.startsWith('/media')) {
+        const fullUrl = `${mediaBaseUrl}${relativePath}`;
+        debugLog(`getMediaUrl: ${relativePath} -> ${fullUrl}`);
+        return fullUrl;
+    }
+    
+    // If the path starts with /, remove it and add /media prefix
+    const cleanPath = relativePath.startsWith('/') ? relativePath.slice(1) : relativePath;
+    const fullUrl = `${mediaBaseUrl}/media/${cleanPath}`;
+    
+    debugLog(`getMediaUrl: ${relativePath} -> ${fullUrl}`);
+    return fullUrl;
 };
 
 // Environment-specific configurations

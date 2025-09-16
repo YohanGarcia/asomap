@@ -13,7 +13,10 @@ from .views import (
     ServiceRatesPageViewSet,
     ServiceCategoryViewSet,
     ProvinceViewSet,
-    SuggestionBoxViewSet
+    SuggestionBoxViewSet,
+    SuggestionBoxPageViewSet,
+    FraudReportPageViewSet,
+    ClaimRequestPageViewSet
 )
 
 router = DefaultRouter()
@@ -30,6 +33,9 @@ router.register(r'service-rates', ServiceRatesPageViewSet, basename='service-rat
 router.register(r'service-categories', ServiceCategoryViewSet, basename='service-categories')
 router.register(r'provinces', ProvinceViewSet, basename='provinces')
 router.register(r'suggestion-box', SuggestionBoxViewSet, basename='suggestion-box')
+router.register(r'suggestion-box-page', SuggestionBoxPageViewSet, basename='suggestion-box-page')
+router.register(r'fraud-report-page', FraudReportPageViewSet, basename='fraud-report-page')
+router.register(r'claim-request-page', ClaimRequestPageViewSet, basename='claim-request-page')
 
 app_name = 'prousuario'
 

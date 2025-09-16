@@ -146,7 +146,11 @@ class CommunityCategory(models.Model):
     """
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, verbose_name="Nombre")
-    icon = models.CharField(max_length=50, verbose_name="Icono")
+    icon = models.CharField(
+        max_length=50, 
+        verbose_name="Icono",
+        help_text="Nombre del icono de React Icons (ej: FaHeart, FaStar, FaUser). Consulta https://react-icons.github.io/react-icons/ para encontrar el icono correcto."
+    )
     description = models.TextField(verbose_name="Descripción")
     is_active = models.BooleanField(default=True, verbose_name="Activo")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")
@@ -185,6 +189,26 @@ class CommunityInitiative(models.Model):
         on_delete=models.CASCADE,
         related_name='initiatives',
         verbose_name="Categoría"
+    )
+    year = models.IntegerField(
+        verbose_name="Año",
+        help_text="Año en que se realizó la iniciativa",
+        null=True,
+        blank=True
+    )
+    location = models.CharField(
+        max_length=200,
+        verbose_name="Ubicación",
+        help_text="Nombre de la ubicación donde se realizó la iniciativa",
+        null=True,
+        blank=True
+    )
+    beneficiaries = models.CharField(
+        max_length=200,
+        verbose_name="Beneficiarios",
+        help_text="Descripción de los beneficiarios de la iniciativa",
+        null=True,
+        blank=True
     )
     is_active = models.BooleanField(default=True, verbose_name="Activo")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Fecha de creación")

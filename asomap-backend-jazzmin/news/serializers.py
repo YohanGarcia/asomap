@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import News, Promotion
+from .models import News, Promotion, NewsMedia
 from bs4 import BeautifulSoup
 import re
 
@@ -22,9 +22,6 @@ class NewsSerializer(serializers.ModelSerializer):
     def get_image(self, obj):
         """Retorna la URL de la imagen"""
         if obj.image:
-            request = self.context.get('request')
-            if request:
-                return request.build_absolute_uri(obj.image.url)
             return obj.image.url
         return None
 
@@ -37,8 +34,16 @@ class NewsSerializer(serializers.ModelSerializer):
         return obj.tags_list
 
     def get_media(self, obj):
-        """Retorna las URLs de media como lista"""
-        return obj.media_list
+        """Retorna los archivos de media como lista estructurada"""
+        media_files = obj.media_files.filter(is_active=True).order_by('order', 'created_at')
+        return [
+            {
+                'type': media.media_type,
+                'url': media.file.url if media.file else None,
+                'caption': media.caption or ''
+            }
+            for media in media_files
+        ]
 
     def get_related_links(self, obj):
         """Retorna los enlaces relacionados como lista"""

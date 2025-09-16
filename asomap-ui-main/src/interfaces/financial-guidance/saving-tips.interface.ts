@@ -46,7 +46,7 @@ export interface ISliderSlidesAPIResponse {
 
 export interface ISliderSlideData {
   id: number;
-  image: string;
+  image: string | null;
   title?: string;
   description?: string;
 }

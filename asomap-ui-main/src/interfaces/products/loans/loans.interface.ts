@@ -6,6 +6,7 @@ export interface ILoanAPI {
   details: string[];
   requirements_title: string;
   requirements: string[];
+  bannerImage: string | null;
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -27,7 +28,7 @@ export interface ILoanData {
   requirementsTitle: string;
   requirements: string[];
   slug: string;
-  bannerImage: string;
+  bannerImage: string | null;
 }
 
 // Interfaces existentes para compatibilidad

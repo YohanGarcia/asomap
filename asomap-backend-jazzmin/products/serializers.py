@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Account, Loan, Card, Certificate
+from .models import Account, Loan, LoanType, Card, Certificate, Banner
 
 class AccountSerializer(serializers.ModelSerializer):
     bannerImage = serializers.SerializerMethodField()
@@ -44,12 +44,15 @@ class AccountSerializer(serializers.ModelSerializer):
 class LoanSerializer(serializers.ModelSerializer):
     details = serializers.SerializerMethodField()
     requirements = serializers.SerializerMethodField()
+    bannerImage = serializers.SerializerMethodField()
+    slug = serializers.SerializerMethodField()
     
     class Meta:
         model = Loan
         fields = [
             'id', 'title', 'description', 'loan_type', 'details', 
-            'requirements_title', 'requirements', 'is_active', 'created_at', 'updated_at'
+            'requirements_title', 'requirements', 'bannerImage', 'slug',
+            'is_active', 'created_at', 'updated_at'
         ]
 
     def get_details(self, obj):
@@ -59,6 +62,14 @@ class LoanSerializer(serializers.ModelSerializer):
     def get_requirements(self, obj):
         """Retorna los requisitos como lista"""
         return obj.requirements_list
+
+    def get_bannerImage(self, obj):
+        """Retorna la URL de la imagen de banner"""
+        return obj.banner_image_url
+
+    def get_slug(self, obj):
+        """Retorna el slug del título"""
+        return obj.slug
 
 class CardSerializer(serializers.ModelSerializer):
     bannerImage = serializers.SerializerMethodField()
@@ -177,4 +188,45 @@ class CertificateSerializer(serializers.ModelSerializer):
 
     def get_slug(self, obj):
         """Retorna el slug del título"""
-        return obj.slug 
+        return obj.slug
+
+
+class LoanTypeSerializer(serializers.ModelSerializer):
+    """
+    Serializer para el modelo LoanType
+    """
+    slug = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = LoanType
+        fields = [
+            'id', 'name', 'slug', 'description',
+            'is_active', 'order', 'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']
+    
+    def get_slug(self, obj):
+        """Retorna el slug del nombre"""
+        return obj.slug
+
+
+class BannerSerializer(serializers.ModelSerializer):
+    """
+    Serializer para el modelo Banner
+    """
+    slug = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Banner
+        fields = [
+            'id', 'title', 'description', 
+            'button1_name', 'button1_url',
+            'button2_name', 'button2_url',
+            'is_active', 'order', 'slug',
+            'created_at', 'updated_at'
+        ]
+        read_only_fields = ['id', 'created_at', 'updated_at']
+    
+    def get_slug(self, obj):
+        """Retorna el slug del título"""
+        return obj.slug

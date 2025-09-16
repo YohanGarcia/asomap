@@ -3,7 +3,6 @@ import { API_CONFIG } from '../../config/config';
 import { ENDPOINTS } from '@/constants';
 import type { CommunitySupportResponse } from '@/interfaces';
 import { debugLog, errorLog } from '@/utils/environment';
-import { communitySupportData } from '@/mocks/about/communitySupport';
 
 export const communityService = {
     getCommunitySupport: async (): Promise<CommunitySupportResponse> => {
@@ -51,7 +50,10 @@ export const communityService = {
                         description: init.description || '',
                         impact: init.impact || '',
                         imageUrl: init.image_src || '',
-                        category: init.category?.name || ''
+                        category: init.category?.name || '',
+                        year: init.year || '',
+                        location: init.location || '',
+                        beneficiaries: init.beneficiaries || ''
                     })) || []
                 }
             };
@@ -62,11 +64,7 @@ export const communityService = {
             debugLog('[CommunityService] Error instanceof Error:', error instanceof Error);
             debugLog('[CommunityService] Error instanceof TypeError:', error instanceof TypeError);
             
-            // Solo usar mock si es un error de red real (no 404)
-            if (error instanceof TypeError || (error instanceof Error && error.message.includes('fetch'))) {
-                debugLog('[CommunityService] Network error, using mock data as fallback');
-                return { data: communitySupportData };
-            }
+           
             
             // Para otros errores (404, 500, etc.), lanzar el error
             throw error;

@@ -31,6 +31,9 @@ def setup_admin_ordering():
             ('ServiceRate', "14. 💵 Tarifas de Servicios"),
             ('Province', "15. 🗺️ Provincias"),
             ('SuggestionBox', "16. 📮 Buzón de Sugerencias"),
+            ('SuggestionBoxPage', "17. 📮 Páginas de Buzón de Sugerencias"),
+            ('FraudReportPage', "18. 🚨 Páginas de Reportes de Fraude"),
+            ('ClaimRequestPage', "19. 📝 Páginas de Solicitudes de Reclamos"),
         ]
         
         # Aplicar el orden
